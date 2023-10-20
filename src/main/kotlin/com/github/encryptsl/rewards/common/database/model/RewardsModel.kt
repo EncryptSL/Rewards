@@ -16,19 +16,20 @@ import java.util.*
 class RewardsModel(private val rewards: Rewards) : RewardsSQL {
 
     override fun firstClaim(player: Player, rewardType: String, duration: Duration) {
-        transaction {
-            RewardTable.insertIgnore {
-                it[username] = player.name
-                it[uuid] = player.uniqueId.toString()
-                it[reward_type] = rewardType
-                it[claimed_at] = java.time.Instant.now().plus(duration).toKotlinInstant()
+        rewards.rewardTasks.doAsync {
+            transaction {
+                RewardTable.insertIgnore {
+                    it[username] = player.name
+                    it[uuid] = player.uniqueId.toString()
+                    it[reward_type] = rewardType
+                    it[claimed_at] = java.time.Instant.now().plus(duration).toKotlinInstant()
+                }
             }
         }
-        rewards.logger.info("Success inserted [UUID: ${player.uniqueId}, REWARD:$rewardType, ${java.time.Instant.now().plus(duration).toKotlinInstant()}]")
     }
 
     override fun claimReward(uuid: UUID, rewardType: String, duration: Duration) {
-        rewards.rewardTasks.doSync {
+        rewards.rewardTasks.doAsync {
             transaction {
                 RewardTable.update({ (RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType) }) {
                     it[claimed_at] = java.time.Instant.now().plus(duration).toKotlinInstant()

@@ -2,6 +2,7 @@ package com.github.encryptsl.rewards.api.menu
 
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.ItemFactory
+import com.github.encryptsl.rewards.api.events.PlayerClaimRewardEvent
 import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
 import dev.triumphteam.gui.builder.item.ItemBuilder
@@ -159,6 +160,9 @@ class OpenGUI(private val rewards: Rewards) {
 
                             rewards.rewardsAPI.claimReward(whoClicked, reward, Duration.ofMinutes(cooldown.toLong()))
                             rewards.rewardsAPI.receiveReward(whoClicked, commands)
+                            rewards.rewardTasks.doSync {
+                                rewards.pluginManager.callEvent(PlayerClaimRewardEvent(whoClicked, reward))
+                            }
                             whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.success.claim"), TagResolver.resolver(
                                 Placeholder.parsed("available_at", remaining?.let { convertFancyTime(it, pattern) }.toString()),
                                 Placeholder.parsed("reward", name)
