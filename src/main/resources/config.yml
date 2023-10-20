@@ -1,0 +1,78 @@
+prefix: '<gold><bold>Odměny</bold> <dark_gray>» '
+
+time:
+  pattern: "d.M YYYY H:m"
+
+database:
+  host: jdbc:sqlite:plugins/Rewards/database.db
+  username: root
+  password: root
+
+gui:
+  title: <gold><bold>Odměny</bold> <white>(Vyber si svou odměnu)
+  fill:
+    border: "YELLOW_STAINED_GLASS_PANE"
+  positions:
+    rows: 6
+  rewards:
+    player:
+      display:
+        name: <gold><bold>Hráčská Odměna
+        icon: CHEST
+        slot: 12
+      lore:
+        - ''
+        - <gray>Odměna
+        - <dark_gray>» <yellow>$3500
+        - <dark_gray>» <yellow>750 exp
+        - ''
+        - <dark_gray>» <cooldown>
+      commands:
+        - eco add {player} 3500
+        - levels add {player} 750 points
+      requires:
+        cooldown: 1440
+        permissions: rewards.player
+    vip:
+      display:
+        name: <yellow><bold>VIP Odměna
+        icon: CHEST
+        slot: 14
+      lore:
+        - ''
+        - <gray>Odměna
+        - <dark_gray>» <yellow>$6500
+        - <dark_gray>» <yellow>1050 exp
+        - ''
+        - <dark_gray>» <cooldown>
+      commands:
+        - eco add {player} 6500
+        - levels add {player} 1050 points
+      requires:
+        cooldown: 1440
+        permissions: rewards.vip
+
+messages:
+  gui:
+    missing-title: <prefix> <red>Chybí nastavení title v menu.
+    missing-rows: <prefix> <red>Chybí nastavení velikosti menu.
+    missing-rewards: <prefix> <red>Chybí nastavení odměn.
+  rewards:
+    is_available: <green>Můžeš si vzít odměnu
+    available_at: <red>Odměna je dostupná až <available_at>
+    success:
+      claim: "<prefix> <green>Vyzvedl jsi svou odměnu <reward> !"
+    error:
+      claimed: "<prefix> <red>Odměnu si můžeš znovu vyzvednout <available_at>"
+      missing-name: <prefix> <red>Chybí nastavení odměny <reward>, jméno odměny
+      missing-slot: <prefix> <red>Chybí nastavení odměny <reward>, není nastavený
+        slot
+      missing-icon: <prefix> <red>Chybí nastavení odměny <reward>, není nastavena
+        icona
+      missing-lore: <prefix> <red>Chybí nastavení odměny <reward>, není nastaven lore
+      missing-commands: <prefix> <red>Chybí nastavení odměn v <reward>
+      missing-permissions: <prefix> <red>Nemáš dostatečná oprávnění pro tuto odměnu
+        !
+  plugin:
+    reload: <prefix> <green>Konfigurace byla úspěšně znovu načtena !
+    missing-time-pattern: "<prefix> <red>Chybí časový pattern."
