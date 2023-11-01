@@ -75,4 +75,6 @@ messages:
         !
   plugin:
     reload: <prefix> <green>Konfigurace byla úspěšně znovu načtena !
+    player-reset-reward: "<prefix> <green>Hráči <player> byla resetována odměna <reward> !"
+    player-not-exist: "<prefix> <red>Hráč <player> neexistuje !"
     missing-time-pattern: "<prefix> <red>Chybí časový pattern."

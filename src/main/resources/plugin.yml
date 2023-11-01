@@ -1,4 +1,6 @@
+# noinspection YAMLSchemaValidation
 name: "${name}"
+# noinspection YAMLSchemaValidation
 main: "${group}.${name}"
 version: ${version}
 api-version: 1.13
@@ -10,7 +12,7 @@ website: https://encryptsl.github.io/
 load: POSTWORLD
 libraries:
   - com.zaxxer:HikariCP:5.0.1
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20
   - org.jetbrains.exposed:exposed-core:0.44.0
   - org.jetbrains.exposed:exposed-jdbc:0.44.0
   - org.jetbrains.exposed:exposed-kotlin-datetime:0.44.0
@@ -23,14 +25,16 @@ permissions:
     default: op
     children:
       rewards.admin: true
-      rewards.player: true
+      reward.player: true
   rewards.admin:
     description: "Full access for admins."
     default: false
     children:
+      rewards.admin.reset: true
       rewards.admin.reload: true
-  rewards.player:
+      rewards.admin.debug: true
+  reward.player:
     description: "Access for permissions to players."
     default: true
     children:
-      rewards.menu: true
+      reward.menu: true

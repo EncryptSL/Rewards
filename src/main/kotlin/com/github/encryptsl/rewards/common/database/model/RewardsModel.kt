@@ -4,7 +4,6 @@ import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.common.database.RewardsSQL
 import com.github.encryptsl.rewards.common.database.tables.RewardTable
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
 import org.bukkit.entity.Player
@@ -35,7 +34,6 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
                     it[claimed_at] = java.time.Instant.now().plus(duration).toKotlinInstant()
                 }
             }
-            rewards.logger.info("Success updated [UUID: ${uuid}, REWARD:$rewardType, ${java.time.Instant.now().plus(duration).toKotlinInstant()}]")
         }
     }
 
@@ -57,7 +55,7 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
         rewards.rewardTasks.doAsync {
             transaction {
                 RewardTable.update({ (RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType) }) {
-                    it[claimed_at] = Instant.fromEpochMilliseconds(0)
+                    it[claimed_at] = Clock.System.now()
                 }
             }
         }

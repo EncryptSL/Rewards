@@ -167,8 +167,7 @@ class OpenGUI(private val rewards: Rewards) {
                                 Placeholder.parsed("available_at", remaining?.let { convertFancyTime(it, pattern) }.toString()),
                                 Placeholder.parsed("reward", name)
                             )))
-
-                            action.currentItem?.let { gui.updateItem(slot, it)}
+                            player.closeInventory()
                         }
                         action.isCancelled = true
                     }

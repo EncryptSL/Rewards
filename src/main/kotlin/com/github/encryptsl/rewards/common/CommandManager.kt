@@ -9,6 +9,7 @@ import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.commands.RewardCmd
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import java.util.function.Function
 
@@ -45,10 +46,25 @@ class CommandManager(private val rewards: Rewards) {
             commandMetaFunction /* Mapper for command meta instances */
         )
     }
+    private fun registerSuggestionProviders(commandManager: PaperCommandManager<CommandSender>) {
+        commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, input ->
+            Bukkit.getOfflinePlayers().toList()
+                .filter { p ->
+                    p.name?.startsWith(input, ignoreCase = true) ?: false
+                }
+                .mapNotNull { it.name }
+        }
+
+        commandManager.parserRegistry().registerSuggestionProvider("rewards") { _, _ ->
+            rewards.config.getConfigurationSection("gui.rewards")
+                ?.getKeys(false)?.mapNotNull { a -> a.toString() } ?: emptyList()
+        }
+    }
 
     fun registerCommands() {
         rewards.logger.info("Registering commands with Cloud Command Framework !")
         val commandManager = createCommandManager()
+        registerSuggestionProviders(commandManager)
         val annotationParser = createAnnotationParser(commandManager)
         annotationParser.parse(RewardCmd(rewards))
     }
