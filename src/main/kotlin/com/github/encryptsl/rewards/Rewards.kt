@@ -6,6 +6,7 @@ import com.github.encryptsl.rewards.common.CommandManager
 import com.github.encryptsl.rewards.common.Locale
 import com.github.encryptsl.rewards.common.database.DatabaseConnector
 import com.github.encryptsl.rewards.common.database.model.RewardsModel
+import com.github.encryptsl.rewards.common.hook.HookManager
 import com.github.encryptsl.rewards.common.tasks.RewardTasks
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -13,6 +14,9 @@ class Rewards : JavaPlugin() {
 
     private val commandManager: CommandManager by lazy { CommandManager(this) }
     private val configLoader: ConfigLoader by lazy { ConfigLoader() }
+    private val hookManager: HookManager by lazy { HookManager(this) }
+
+
     val rewardTasks: RewardTasks by lazy { RewardTasks(this) }
     val rewardModel: RewardsModel by lazy { RewardsModel(this) }
     val rewardsAPI: RewardsAPI by lazy { RewardsAPI(this) }
@@ -36,11 +40,16 @@ class Rewards : JavaPlugin() {
 
     override fun onEnable() {
         commandManager.registerCommands()
+        hookRegistration()
         logger.info("Plugins Rewards is loaded !")
     }
 
     override fun onDisable() {
-        super.onDisable()
+        logger.info("Plugins Rewards is disabled !")
+    }
+
+    private fun hookRegistration() {
+        hookManager.hookDiscordSrv()
     }
 
 }

@@ -71,10 +71,11 @@ messages:
         icona
       missing-lore: <prefix> <red>Chybí nastavení odměny <reward>, není nastaven lore
       missing-commands: <prefix> <red>Chybí nastavení odměn v <reward>
-      missing-permissions: <prefix> <red>Nemáš dostatečná oprávnění pro tuto odměnu
-        !
+      missing-permissions: <prefix> <red>Nemáš dostatečná oprávnění pro tuto odměnu !
+      missing-discord-link: <prefix> <red>Nemáš propojený discord účet !
   plugin:
     reload: <prefix> <green>Konfigurace byla úspěšně znovu načtena !
     player-reset-reward: "<prefix> <green>Hráči <player> byla resetována odměna <reward> !"
     player-not-exist: "<prefix> <red>Hráč <player> neexistuje !"
+    discordsrv-missing: "<prefix> <red>Omlouvám se ale plugin DiscordSRV nebyl nalezen, kontaktuj admina !"
     missing-time-pattern: "<prefix> <red>Chybí časový pattern."

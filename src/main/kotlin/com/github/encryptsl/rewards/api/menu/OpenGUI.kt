@@ -5,6 +5,7 @@ import com.github.encryptsl.rewards.api.ItemFactory
 import com.github.encryptsl.rewards.api.events.PlayerClaimRewardEvent
 import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
+import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvHook
 import dev.triumphteam.gui.builder.item.ItemBuilder
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
@@ -17,6 +18,7 @@ import java.time.Duration
 class OpenGUI(private val rewards: Rewards) {
 
     private val itemFactory: ItemFactory by lazy { ItemFactory() }
+    private val discordSrv: DiscordSrvHook by lazy { DiscordSrvHook(rewards) }
 
     fun openRewardGUI(player: Player) {
 
@@ -151,6 +153,11 @@ class OpenGUI(private val rewards: Rewards) {
                                 val permission = rewards.config.getString("gui.rewards.$reward.requires.permissions").toString()
                                 if (!whoClicked.hasPermission(permission))
                                     return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-permissions")))
+                            }
+
+                            if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
+                                if (!discordSrv.isLinked(whoClicked))
+                                    return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-discord-link")))
                             }
 
                             if (hasCooldown)

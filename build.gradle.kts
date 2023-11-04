@@ -11,12 +11,14 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://nexus.scarsz.me/content/groups/public/")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     compileOnly(kotlin("stdlib", "1.9.20"))
     compileOnly("com.zaxxer:HikariCP:5.0.1")
+    compileOnly("com.discordsrv:discordsrv:1.26.2")
     compileOnly("org.jetbrains.exposed:exposed-core:0.44.0")
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.44.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.44.0")
