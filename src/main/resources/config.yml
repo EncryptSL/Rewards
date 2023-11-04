@@ -63,6 +63,9 @@ gui:
         - <dark_gray>» <yellow>350 exp
         - ''
         - <dark_gray>» <cooldown>
+      commands:
+        - eco add {player} 1650
+        - levels add {player} 350 points
       requires:
         cooldown: 1440
         discord: true
