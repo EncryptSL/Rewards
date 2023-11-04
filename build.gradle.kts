@@ -10,7 +10,6 @@ description = providers.gradleProperty("plugin_description").get()
 repositories {
     mavenLocal()
     mavenCentral()
-    maven("https://jitpack.io")
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
@@ -21,7 +20,7 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-core:0.44.0")
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.44.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.44.0")
-    implementation("dev.triumphteam:triumph-gui:3.1.2")
+    implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("cloud.commandframework:cloud-paper:1.8.4")
     implementation("cloud.commandframework:cloud-annotations:1.8.4")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
