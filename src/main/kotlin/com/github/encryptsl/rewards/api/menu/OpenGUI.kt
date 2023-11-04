@@ -117,7 +117,7 @@ class OpenGUI(private val rewards: Rewards) {
                 if (!rewards.config.contains("gui.rewards.$reward.lore"))
                     return player.sendMessage(
                         ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.shop.error.missing-lore"),
+                            rewards.locale.getMessage("messages.rewards.error.missing-lore"),
                             Placeholder.parsed("reward", reward)
                         )
                     )
@@ -125,7 +125,7 @@ class OpenGUI(private val rewards: Rewards) {
                 if (!rewards.config.contains("gui.rewards.$reward.commands"))
                     return player.sendMessage(
                         ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.shop.error.missing-commands"),
+                            rewards.locale.getMessage("messages.rewards.error.missing-commands"),
                             Placeholder.parsed("reward", reward)
                         )
                     )
