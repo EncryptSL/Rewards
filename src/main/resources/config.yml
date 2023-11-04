@@ -23,12 +23,12 @@ gui:
       lore:
         - ''
         - <gray>Odměna
-        - <dark_gray>» <yellow>$3500
+        - <dark_gray>» <yellow>$500
         - <dark_gray>» <yellow>750 exp
         - ''
         - <dark_gray>» <cooldown>
       commands:
-        - eco add {player} 3500
+        - eco add {player} 500
         - levels add {player} 750 points
       requires:
         cooldown: 1440
@@ -41,16 +41,31 @@ gui:
       lore:
         - ''
         - <gray>Odměna
-        - <dark_gray>» <yellow>$6500
-        - <dark_gray>» <yellow>1050 exp
+        - <dark_gray>» <yellow>$1500
+        - <dark_gray>» <yellow>950 exp
         - ''
         - <dark_gray>» <cooldown>
       commands:
-        - eco add {player} 6500
-        - levels add {player} 1050 points
+        - eco add {player} 1500
+        - levels add {player} 950 points
       requires:
         cooldown: 1440
         permissions: rewards.vip
+    discord:
+      display:
+        name: <blue><bold>Discord Odměna
+        icon: ENDER_CHEST
+        slot: 16
+      lore:
+        - ''
+        - <gray>Odměna
+        - <dark_gray>» <yellow>$1650
+        - <dark_gray>» <yellow>350 exp
+        - ''
+        - <dark_gray>» <cooldown>
+      requires:
+        cooldown: 1440
+        discord: true
 
 messages:
   gui:
