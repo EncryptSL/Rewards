@@ -6,7 +6,7 @@ import java.util.*
 
 interface Reward {
     fun claimReward(player: Player, rewardType: String, duration: Duration)
-    fun receiveReward(player: Player, commands: List<String>)
+    fun receiveReward(player: Player, commands: List<String>, rewardType: String)
     fun hasClaimReward(uuid: UUID, rewardType: String): Boolean
     fun hasCooldown(uuid: UUID, rewardType: String): Boolean
     fun resetCooldown(uuid: UUID, rewardType: String)

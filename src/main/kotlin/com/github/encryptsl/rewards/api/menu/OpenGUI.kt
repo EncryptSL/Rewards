@@ -2,9 +2,9 @@ package com.github.encryptsl.rewards.api.menu
 
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.ItemFactory
-import com.github.encryptsl.rewards.api.events.PlayerClaimRewardEvent
 import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
+import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvException
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvHook
 import dev.triumphteam.gui.builder.item.ItemBuilder
 import dev.triumphteam.gui.guis.Gui
@@ -157,8 +157,12 @@ class OpenGUI(private val rewards: Rewards) {
 
                             if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
                                 if (rewards.config.getBoolean("gui.rewards.$reward.requires.discord")) {
-                                    if (!discordSrv.isLinked(whoClicked))
-                                        return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-discord-link")))
+                                    try {
+                                        if (!discordSrv.isLinked(whoClicked))
+                                            return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-discord-link")))
+                                    } catch (e : DiscordSrvException) {
+                                        return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
+                                    }
                                 }
                             }
 
@@ -168,10 +172,7 @@ class OpenGUI(private val rewards: Rewards) {
                                 ))
 
                             rewards.rewardsAPI.claimReward(whoClicked, reward, Duration.ofMinutes(cooldown.toLong()))
-                            rewards.rewardsAPI.receiveReward(whoClicked, commands)
-                            rewards.rewardTasks.doSync {
-                                rewards.pluginManager.callEvent(PlayerClaimRewardEvent(whoClicked, reward))
-                            }
+                            rewards.rewardsAPI.receiveReward(whoClicked, commands, reward)
                             whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.success.claim"), TagResolver.resolver(
                                 Placeholder.parsed("available_at", remaining?.let { convertFancyTime(it, pattern) }.toString()),
                                 Placeholder.parsed("reward", name)

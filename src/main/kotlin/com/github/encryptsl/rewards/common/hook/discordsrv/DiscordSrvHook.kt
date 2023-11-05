@@ -10,14 +10,19 @@ class DiscordSrvHook(private val rewards: Rewards) {
 
     fun setupDiscordSrv(): Boolean
     {
-        return rewards.pluginManager.getPlugin("DiscordSRV") != null
+        return try {
+            Class.forName("github.scarsz.discordsrv.DiscordSRV")
+            true
+        } catch (e : ClassNotFoundException) {
+            false
+        }
     }
 
     fun isLinked(player: Player): Boolean {
-        if (setupDiscordSrv())
-            throw DiscordSrvException(rewards.locale.getMessage(""))
+        if (!setupDiscordSrv())
+            throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.discordsrv-missing"))
 
-        val accountLinkedManager: AccountLinkManager = DiscordSRV.getPlugin().accountLinkManager
+        val accountLinkedManager: AccountLinkManager = DiscordSRV.getPlugin().accountLinkManager ?: throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.discordsrv-missing"))
 
         return accountLinkedManager.getDiscordId(player.uniqueId) != null
     }

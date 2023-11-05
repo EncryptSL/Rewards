@@ -43,7 +43,7 @@ class RewardCmd(private val rewards: Rewards) {
 
         rewards.rewardsAPI.resetCooldown(target.uniqueId, reward)
 
-        commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.reset-player-reward"), TagResolver.resolver(
+        commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.success.reset"), TagResolver.resolver(
             Placeholder.parsed("player", target.name.toString()),
             Placeholder.parsed("reward", reward),
         )))

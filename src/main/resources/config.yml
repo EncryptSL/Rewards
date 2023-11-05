@@ -80,6 +80,7 @@ messages:
     available_at: <red>Odměna je dostupná až <available_at>
     success:
       claim: "<prefix> <green>Vyzvedl jsi svou odměnu <reward> !"
+      reset: "<prefix> <green>Hráči <player> byla resetována odměna <reward>"
     error:
       claimed: "<prefix> <red>Odměnu si můžeš znovu vyzvednout <available_at>"
       missing-name: <prefix> <red>Chybí nastavení odměny <reward>, jméno odměny

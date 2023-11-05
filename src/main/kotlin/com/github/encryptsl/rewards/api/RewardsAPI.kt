@@ -1,6 +1,7 @@
 package com.github.encryptsl.rewards.api
 
 import com.github.encryptsl.rewards.Rewards
+import com.github.encryptsl.rewards.api.events.PlayerClaimRewardEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.time.Duration
@@ -16,7 +17,10 @@ class RewardsAPI(private val rewards: Rewards) : Reward {
         }
     }
 
-    override fun receiveReward(player: Player, commands: List<String>) {
+    override fun receiveReward(player: Player, commands: List<String>, rewardType: String) {
+        rewards.rewardTasks.doSync {
+            rewards.pluginManager.callEvent(PlayerClaimRewardEvent(player, rewardType))
+        }
         commands.forEach { command ->
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
                 .replace("%player%", player.name)
