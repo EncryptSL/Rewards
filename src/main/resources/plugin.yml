@@ -12,11 +12,11 @@ website: https://encryptsl.github.io/
 load: POSTWORLD
 softdepend: [DiscordSRV]
 libraries:
-  - com.zaxxer:HikariCP:5.0.1
+  - com.zaxxer:HikariCP:5.1.0
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20
-  - org.jetbrains.exposed:exposed-core:0.44.0
-  - org.jetbrains.exposed:exposed-jdbc:0.44.0
-  - org.jetbrains.exposed:exposed-kotlin-datetime:0.44.0
+  - org.jetbrains.exposed:exposed-core:0.44.1
+  - org.jetbrains.exposed:exposed-jdbc:0.44.1
+  - org.jetbrains.exposed:exposed-kotlin-datetime:0.44.1
 
 description: ${description}
 
