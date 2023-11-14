@@ -2,6 +2,7 @@ package com.github.encryptsl.rewards.common.database
 
 import com.github.encryptsl.rewards.common.database.tables.RewardTable
 import com.zaxxer.hikari.HikariDataSource
+import org.bukkit.Bukkit
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -18,7 +19,10 @@ class DatabaseConnector : DatabaseConnectorProvider {
             password = pass
         }
 
+        Bukkit.getLogger().info("Database connecting...")
         Database.connect(config)
+        Bukkit.getLogger().info("Database successfully connected.")
+
         transaction {
             addLogger(StdOutSqlLogger)
             SchemaUtils.create(RewardTable)
