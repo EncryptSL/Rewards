@@ -11,25 +11,25 @@ database:
 gui:
   title: <gold><bold>Odměny</bold> <white>(Vyber si svou odměnu)
   fill:
-    border: "YELLOW_STAINED_GLASS_PANE"
+    border: YELLOW_STAINED_GLASS_PANE
   positions:
-    rows: 6
+    rows: 3
   rewards:
     player:
       display:
         name: <gold><bold>Hráčská Odměna
         icon: CHEST
-        slot: 12
+        slot: 11
       lore:
         - ''
         - <gray>Odměna
-        - <dark_gray>» <yellow>$500
-        - <dark_gray>» <yellow>750 exp
+        - <dark_gray>» <yellow>$150
+        - <dark_gray>» <yellow>15 exp
         - ''
         - <dark_gray>» <cooldown>
       commands:
-        - eco add {player} 500
-        - levels add {player} 750 points
+        - eco add {player} 150
+        - levels add {player} 15 points
       requires:
         cooldown: 1440
         permissions: rewards.player
@@ -37,17 +37,17 @@ gui:
       display:
         name: <yellow><bold>VIP Odměna
         icon: CHEST
-        slot: 14
+        slot: 13
       lore:
         - ''
         - <gray>Odměna
-        - <dark_gray>» <yellow>$1500
-        - <dark_gray>» <yellow>950 exp
+        - <dark_gray>» <yellow>$350
+        - <dark_gray>» <yellow>25 exp
         - ''
         - <dark_gray>» <cooldown>
       commands:
-        - eco add {player} 1500
-        - levels add {player} 950 points
+        - eco add {player} 350
+        - levels add {player} 25 points
       requires:
         cooldown: 1440
         permissions: rewards.vip
@@ -55,17 +55,17 @@ gui:
       display:
         name: <blue><bold>Discord Odměna
         icon: ENDER_CHEST
-        slot: 16
+        slot: 15
       lore:
         - ''
         - <gray>Odměna
-        - <dark_gray>» <yellow>$1650
-        - <dark_gray>» <yellow>350 exp
+        - <dark_gray>» <yellow>$450
+        - <dark_gray>» <yellow>35 exp
         - ''
         - <dark_gray>» <cooldown>
       commands:
-        - eco add {player} 1650
-        - levels add {player} 350 points
+        - eco add {player} 450
+        - levels add {player} 35 points
       requires:
         cooldown: 1440
         discord: true
@@ -79,10 +79,10 @@ messages:
     is_available: <green>Můžeš si vzít odměnu
     available_at: <red>Odměna je dostupná až <available_at>
     success:
-      claim: "<prefix> <green>Vyzvedl jsi svou odměnu <reward> !"
-      reset: "<prefix> <green>Hráči <player> byla resetována odměna <reward>"
+      claim: <prefix> <green>Vyzvedl jsi svou odměnu <reward> !
+      reset: <prefix> <green>Hráči <player> byla resetována odměna <reward> !
     error:
-      claimed: "<prefix> <red>Odměnu si můžeš znovu vyzvednout <available_at>"
+      claimed: <prefix> <red>Odměnu si můžeš znovu vyzvednout <available_at>
       missing-name: <prefix> <red>Chybí nastavení odměny <reward>, jméno odměny
       missing-slot: <prefix> <red>Chybí nastavení odměny <reward>, není nastavený
         slot
@@ -90,11 +90,14 @@ messages:
         icona
       missing-lore: <prefix> <red>Chybí nastavení odměny <reward>, není nastaven lore
       missing-commands: <prefix> <red>Chybí nastavení odměn v <reward>
-      missing-permissions: <prefix> <red>Nemáš dostatečná oprávnění pro tuto odměnu !
+      missing-permissions: <prefix> <red>Nemáš dostatečná oprávnění pro tuto odměnu
+        !
       missing-discord-link: <prefix> <red>Nemáš propojený discord účet !
   plugin:
     reload: <prefix> <green>Konfigurace byla úspěšně znovu načtena !
-    player-reset-reward: "<prefix> <green>Hráči <player> byla resetována odměna <reward> !"
-    player-not-exist: "<prefix> <red>Hráč <player> neexistuje !"
-    discordsrv-missing: "<prefix> <red>Omlouvám se ale plugin DiscordSRV nebyl nalezen, kontaktuj admina !"
-    missing-time-pattern: "<prefix> <red>Chybí časový pattern."
+    player-reset-reward: <prefix> <green>Hráči <player> byla resetována odměna <reward>
+      !
+    player-not-exist: <prefix> <red>Hráč <player> neexistuje !
+    discordsrv-missing: <prefix> <red>Omlouvám se ale plugin DiscordSRV nebyl nalezen,
+      kontaktuj admina !
+    missing-time-pattern: <prefix> <red>Chybí časový pattern.
