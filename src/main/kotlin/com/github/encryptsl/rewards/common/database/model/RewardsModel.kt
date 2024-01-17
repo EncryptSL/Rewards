@@ -8,6 +8,7 @@ import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Duration
 import java.util.*
@@ -38,14 +39,18 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
     }
 
     override fun hasClaimReward(uuid: UUID, rewardType: String): Boolean = transaction {
-        !RewardTable.select { (RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType) }
+        !RewardTable.select(RewardTable.uuid, RewardTable.reward_type)
+            .where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType))
             .empty()
     }
 
     override fun hasCooldown(uuid: UUID, rewardType: String): Boolean = transaction {
         val cooldown =
-            RewardTable.select { (RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType) }
-                .firstOrNull()
+            RewardTable.select(
+                RewardTable.claimed_at,
+                RewardTable.reward_type,
+                RewardTable.uuid
+            ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
         cooldown != null && Clock.System.now().toJavaInstant()
             .isBefore(cooldown[RewardTable.claimed_at].toJavaInstant())
@@ -63,8 +68,11 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
 
     override fun getRemainingDate(uuid: UUID, rewardType: String): Date? = transaction {
         val query =
-            RewardTable.select { (RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType) }
-                .firstOrNull()
+            RewardTable.select(
+                RewardTable.uuid,
+                RewardTable.reward_type,
+                RewardTable.claimed_at
+            ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
         if (query != null) Date.from(query[RewardTable.claimed_at].toJavaInstant()) else null
     }
