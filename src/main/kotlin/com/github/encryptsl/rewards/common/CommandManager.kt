@@ -1,31 +1,29 @@
 package com.github.encryptsl.rewards.common
 
+import cloud.commandframework.SenderMapper
 import cloud.commandframework.annotations.AnnotationParser
-import cloud.commandframework.arguments.parser.ParserParameters
-import cloud.commandframework.arguments.parser.StandardParameters
 import cloud.commandframework.bukkit.CloudBukkitCapabilities
-import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator
-import cloud.commandframework.meta.CommandMeta
+import cloud.commandframework.execution.ExecutionCoordinator
 import cloud.commandframework.paper.PaperCommandManager
+import cloud.commandframework.suggestion.Suggestion
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.commands.RewardCmd
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import java.util.function.Function
+import java.util.concurrent.CompletableFuture
 
 class CommandManager(private val rewards: Rewards) {
     private fun createCommandManager(): PaperCommandManager<CommandSender> {
-        val executionCoordinatorFunction = AsynchronousCommandExecutionCoordinator.builder<CommandSender>().build()
-        val mapperFunction = Function.identity<CommandSender>()
+        val executionCoordinatorFunction = ExecutionCoordinator.builder<CommandSender>().build()
+        val mapperFunction = SenderMapper.identity<CommandSender>()
         val commandManager = PaperCommandManager(
             rewards,
             executionCoordinatorFunction,
-            mapperFunction,
             mapperFunction
         )
         if (commandManager.hasCapability(CloudBukkitCapabilities.BRIGADIER)) {
             commandManager.registerBrigadier()
-            commandManager.brigadierManager()?.setNativeNumberSuggestions(false)
+            commandManager.brigadierManager().setNativeNumberSuggestions(false)
         }
         if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             (commandManager as PaperCommandManager<*>).registerAsynchronousCompletions()
@@ -35,29 +33,21 @@ class CommandManager(private val rewards: Rewards) {
 
 
     private fun createAnnotationParser(commandManager: PaperCommandManager<CommandSender>): AnnotationParser<CommandSender> {
-        val commandMetaFunction = Function<ParserParameters, CommandMeta> { p: ParserParameters ->
-            CommandMeta.simple() // Decorate commands with descriptions
-                .with(CommandMeta.DESCRIPTION, p[StandardParameters.DESCRIPTION, "No Description"])
-                .build()
-        }
         return AnnotationParser(
             commandManager,
             CommandSender::class.java,
-            commandMetaFunction /* Mapper for command meta instances */
         )
     }
     private fun registerSuggestionProviders(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, input ->
-            Bukkit.getOfflinePlayers().toList()
-                .filter { p ->
-                    p.name?.startsWith(input, ignoreCase = true) ?: false
-                }
-                .mapNotNull { it.name }
+            CompletableFuture.completedFuture(Bukkit.getOfflinePlayers()
+                .filter { p -> p.name?.startsWith(input.input(), true) ?: false }
+                .map { Suggestion.simple(it.name ?: it.uniqueId.toString()) }
+            )
         }
 
         commandManager.parserRegistry().registerSuggestionProvider("rewards") { _, _ ->
-            rewards.config.getConfigurationSection("gui.rewards")
-                ?.getKeys(false)?.mapNotNull { a -> a.toString() } ?: emptyList()
+            CompletableFuture.completedFuture(rewards.config.getConfigurationSection("gui.rewards")?.getKeys(false)?.map { Suggestion.simple(it) }!!)
         }
     }
 

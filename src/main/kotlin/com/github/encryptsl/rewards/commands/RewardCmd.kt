@@ -1,9 +1,9 @@
 package com.github.encryptsl.rewards.commands
 
 import cloud.commandframework.annotations.Argument
+import cloud.commandframework.annotations.Command
 import cloud.commandframework.annotations.CommandDescription
-import cloud.commandframework.annotations.CommandMethod
-import cloud.commandframework.annotations.CommandPermission
+import cloud.commandframework.annotations.Permission
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.menu.OpenGUI
 import com.github.encryptsl.rewards.api.objects.ModernText
@@ -19,8 +19,8 @@ class RewardCmd(private val rewards: Rewards) {
 
     private val rewardsMenu: OpenGUI by lazy { OpenGUI(rewards) }
 
-    @CommandMethod("reward|odmena")
-    @CommandPermission("reward.menu")
+    @Command("reward|odmena")
+    @Permission("reward.menu")
     fun onOpenRewardMenu(player: Player) {
         rewards.rewardTasks.doSync {
             rewardsMenu.openRewardGUI(player)
@@ -28,8 +28,8 @@ class RewardCmd(private val rewards: Rewards) {
     }
 
 
-    @CommandMethod("rewards admin reset <player> <reward>")
-    @CommandPermission("rewards.admin.reset")
+    @Command("rewards admin reset <player> <reward>")
+    @Permission("rewards.admin.reset")
     fun onRewardsAdminReset(
         commandSender: CommandSender,
         @Argument(value = "player", suggestions = "offlinePlayers") target: OfflinePlayer,
@@ -49,16 +49,16 @@ class RewardCmd(private val rewards: Rewards) {
         )))
     }
 
-    @CommandMethod("rewards admin reload")
-    @CommandPermission("rewards.admin.reload")
+    @Command("rewards admin reload")
+    @Permission("rewards.admin.reload")
     fun onConfigReload(commandSender: CommandSender) {
         rewards.reloadConfig()
         rewards.saveConfig()
         commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.reload")))
     }
 
-    @CommandMethod("rewards admin debug")
-    @CommandPermission("rewards.admin.debug")
+    @Command("rewards admin debug")
+    @Permission("rewards.admin.debug")
     fun onDebug(commandSender: CommandSender) {
         commandSender.sendMessage(ModernText.miniModernText("<dark_red>DEBUG <red> %s".format(rewards.rewardModel.dumpDatabase())))
     }

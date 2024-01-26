@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://nexus.scarsz.me/content/groups/public/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -23,8 +24,8 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.46.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.44.1")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
-    implementation("cloud.commandframework:cloud-paper:1.8.4")
-    implementation("cloud.commandframework:cloud-annotations:1.8.4")
+    implementation("cloud.commandframework:cloud-paper:2.0.0-SNAPSHOT")
+    implementation("cloud.commandframework:cloud-annotations:2.0.0-SNAPSHOT")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
 }
 
@@ -42,10 +43,9 @@ tasks {
     }
     shadowJar {
         minimize {
-            relocate("cloud.commandframework", "com.github.encryptsl.rewards.libs.cloud")
-            relocate("dev.triumphteam.gui", "com.github.encryptsl.rewards.libs.gui")
+            relocate("cloud.commandframework", "cloud-core")
+            relocate("dev.triumphteam.gui", "triumpteam")
         }
-        destinationDirectory = File("C:\\Users\\Rydlo\\Documents\\PaperServers\\1.20.2\\plugins")
     }
 }
 
