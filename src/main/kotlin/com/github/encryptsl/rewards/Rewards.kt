@@ -50,6 +50,7 @@ class Rewards : JavaPlugin() {
 
     private fun hookRegistration() {
         hookManager.hookDiscordSrv()
+        hookManager.hookKiraDiscord()
     }
 
 }

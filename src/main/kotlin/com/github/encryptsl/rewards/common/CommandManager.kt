@@ -1,15 +1,16 @@
 package com.github.encryptsl.rewards.common
 
-import cloud.commandframework.SenderMapper
-import cloud.commandframework.annotations.AnnotationParser
-import cloud.commandframework.bukkit.CloudBukkitCapabilities
-import cloud.commandframework.execution.ExecutionCoordinator
-import cloud.commandframework.paper.PaperCommandManager
-import cloud.commandframework.suggestion.Suggestion
+
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.commands.RewardCmd
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.incendo.cloud.SenderMapper
+import org.incendo.cloud.annotations.AnnotationParser
+import org.incendo.cloud.bukkit.CloudBukkitCapabilities
+import org.incendo.cloud.execution.ExecutionCoordinator
+import org.incendo.cloud.paper.PaperCommandManager
+import org.incendo.cloud.suggestion.Suggestion
 import java.util.concurrent.CompletableFuture
 
 class CommandManager(private val rewards: Rewards) {
@@ -52,11 +53,15 @@ class CommandManager(private val rewards: Rewards) {
     }
 
     fun registerCommands() {
-        rewards.logger.info("Registering commands with Cloud Command Framework !")
-        val commandManager = createCommandManager()
-        registerSuggestionProviders(commandManager)
-        val annotationParser = createAnnotationParser(commandManager)
-        annotationParser.parse(RewardCmd(rewards))
+        try {
+            rewards.logger.info("Registering commands with Cloud Command Framework !")
+            val commandManager = createCommandManager()
+            registerSuggestionProviders(commandManager)
+            val annotationParser = createAnnotationParser(commandManager)
+            annotationParser.parse(RewardCmd(rewards))
+        } catch ( e : NoClassDefFoundError) {
+            rewards.logger.error(e.message ?: e.localizedMessage)
+        }
     }
 
 }

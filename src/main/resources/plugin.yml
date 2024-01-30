@@ -10,7 +10,7 @@ author: EncryptSL
 website: https://encryptsl.github.io/
 
 load: POSTWORLD
-softdepend: [DiscordSRV]
+softdepend: [DiscordSRV, KiraDiscord]
 libraries:
   - com.zaxxer:HikariCP:5.1.0
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22

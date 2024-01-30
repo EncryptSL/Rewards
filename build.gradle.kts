@@ -12,7 +12,6 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://nexus.scarsz.me/content/groups/public/")
-    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -20,12 +19,13 @@ dependencies {
     compileOnly(kotlin("stdlib", "1.9.22"))
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
+    compileOnly("com.github.encryptsl.kira:KiraDiscord:1.0.0")
     compileOnly("org.jetbrains.exposed:exposed-core:0.46.0")
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.46.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.44.1")
     implementation("dev.triumphteam:triumph-gui:3.1.7")
-    implementation("cloud.commandframework:cloud-paper:2.0.0-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-annotations:2.0.0-SNAPSHOT")
+    implementation("org.incendo:cloud-paper:2.0.0-beta.1")
+    implementation("org.incendo:cloud-annotations:2.0.0-beta.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
 }
 
@@ -42,8 +42,8 @@ tasks {
         }
     }
     shadowJar {
+        relocate("cloud.commandframework", "cloud-core")
         minimize {
-            relocate("cloud.commandframework", "cloud-core")
             relocate("dev.triumphteam.gui", "triumpteam")
         }
     }

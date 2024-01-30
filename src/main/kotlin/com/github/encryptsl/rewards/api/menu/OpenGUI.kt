@@ -5,7 +5,7 @@ import com.github.encryptsl.rewards.api.ItemFactory
 import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvException
-import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvHook
+import com.github.encryptsl.rewards.common.hook.kira.KiraDiscordHook
 import dev.triumphteam.gui.builder.item.ItemBuilder
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
@@ -18,7 +18,7 @@ import java.time.Duration
 class OpenGUI(private val rewards: Rewards) {
 
     private val itemFactory: ItemFactory by lazy { ItemFactory() }
-    private val discordSrv: DiscordSrvHook by lazy { DiscordSrvHook(rewards) }
+    private val kiraDiscordHook: KiraDiscordHook by lazy { KiraDiscordHook(rewards) }
 
     fun openRewardGUI(player: Player) {
 
@@ -158,7 +158,7 @@ class OpenGUI(private val rewards: Rewards) {
                             if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
                                 if (rewards.config.getBoolean("gui.rewards.$reward.requires.discord")) {
                                     try {
-                                        if (!discordSrv.isLinked(whoClicked))
+                                        if (!kiraDiscordHook.isLinked(whoClicked))
                                             return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-discord-link")))
                                     } catch (e : DiscordSrvException) {
                                         return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))

@@ -1,9 +1,6 @@
 package com.github.encryptsl.rewards.commands
 
-import cloud.commandframework.annotations.Argument
-import cloud.commandframework.annotations.Command
-import cloud.commandframework.annotations.CommandDescription
-import cloud.commandframework.annotations.Permission
+
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.menu.OpenGUI
 import com.github.encryptsl.rewards.api.objects.ModernText
@@ -12,6 +9,10 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.incendo.cloud.annotations.Argument
+import org.incendo.cloud.annotations.Command
+import org.incendo.cloud.annotations.CommandDescription
+import org.incendo.cloud.annotations.Permission
 
 @Suppress("UNUSED")
 @CommandDescription("Provided by plugin Rewards")
