@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 
 class DiscordSrvHook(private val rewards: Rewards) {
 
+    private val pluginName = "DiscordSRV"
 
     fun setupDiscordSrv(): Boolean
     {
@@ -20,9 +21,9 @@ class DiscordSrvHook(private val rewards: Rewards) {
 
     fun isLinked(player: Player): Boolean {
         if (!setupDiscordSrv())
-            throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.discordsrv-missing"))
+            throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.dependency-missing").replace("<dependency>", pluginName) )
 
-        val accountLinkedManager: AccountLinkManager = DiscordSRV.getPlugin().accountLinkManager ?: throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.discordsrv-missing"))
+        val accountLinkedManager: AccountLinkManager = DiscordSRV.getPlugin().accountLinkManager ?: throw DiscordSrvException(rewards.locale.getMessage("messages.plugin.dependency-missing").replace("<dependency>", pluginName))
 
         return accountLinkedManager.getDiscordId(player.uniqueId) != null
     }

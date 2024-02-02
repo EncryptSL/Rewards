@@ -98,6 +98,6 @@ messages:
     player-reset-reward: <prefix> <green>Hráči <player> byla resetována odměna <reward>
       !
     player-not-exist: <prefix> <red>Hráč <player> neexistuje !
-    discordsrv-missing: <prefix> <red>Omlouvám se ale plugin DiscordSRV nebyl nalezen,
+    dependency-missing: <prefix> <red>Omlouvám se ale plugin  <dark_red><dependency></dark_red> nebyl nalezen,
       kontaktuj admina !
     missing-time-pattern: <prefix> <red>Chybí časový pattern.
