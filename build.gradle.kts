@@ -20,9 +20,9 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl.kira:KiraDiscord:1.0.0")
-    compileOnly("org.jetbrains.exposed:exposed-core:0.46.0")
-    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.46.0")
-    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.44.1")
+    compileOnly("org.jetbrains.exposed:exposed-core:0.47.0")
+    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.47.0")
+    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.47.0")
 
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("org.incendo:cloud-paper:2.0.0-beta.2")
