@@ -21,7 +21,7 @@ class RewardsAPI(private val rewards: Rewards) : Reward {
         rewards.rewardTasks.doSync {
             rewards.pluginManager.callEvent(PlayerClaimRewardEvent(player, rewardType))
         }
-        commands.forEach { command ->
+        for (command in commands) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command
                 .replace("%player%", player.name)
                 .replace("{player}", player.name)

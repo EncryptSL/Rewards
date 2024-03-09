@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "1.9.23"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -16,13 +16,13 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    compileOnly(kotlin("stdlib", "1.9.22"))
+    compileOnly(kotlin("stdlib", "1.9.23"))
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl.kira:KiraDiscord:1.0.0")
-    compileOnly("org.jetbrains.exposed:exposed-core:0.47.0")
-    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.47.0")
-    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.47.0")
+    compileOnly("org.jetbrains.exposed:exposed-core:0.48.0")
+    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.48.0")
+    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.48.0")
 
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("org.incendo:cloud-paper:2.0.0-beta.2")

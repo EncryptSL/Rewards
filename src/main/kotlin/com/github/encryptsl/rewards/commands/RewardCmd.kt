@@ -37,7 +37,7 @@ class RewardCmd(private val rewards: Rewards) {
         @Argument(value = "reward", suggestions = "rewards") reward: String
     ) {
         if (!rewards.rewardsAPI.hasClaimReward(target.uniqueId, reward))
-            commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.player-not-exist-"), TagResolver.resolver(
+            return commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.player-not-exist-"), TagResolver.resolver(
                 Placeholder.parsed("player", target.name.toString()),
                 Placeholder.parsed("reward", reward),
             )))

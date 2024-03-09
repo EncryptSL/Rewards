@@ -18,29 +18,17 @@ class HookManager(private val rewards: Rewards) {
 
     fun hookDiscordSrv() {
         if (isPluginInstalled("DiscordSRV") && DiscordSrvHook(rewards).setupDiscordSrv()) {
-            rewards.logger.info("###################################")
-            rewards.logger.info("#         DiscordSRV Found        #")
-            rewards.logger.info("#      You can now use discord    #")
-            rewards.logger.info("#          linked rewards         #")
-            rewards.logger.info("###################################")
+            rewards.logger.info("DiscordSRV found, now you can use discord rewards.")
         } else {
-            rewards.logger.info("###################################")
-            rewards.logger.info("#      DiscordSRV not Found       #")
-            rewards.logger.info("###################################")
+            rewards.logger.info("DiscordSRV not found, you can't use discord rewards.")
         }
     }
 
     fun hookKiraDiscord() {
         if (isPluginInstalled("KiraDiscord") && KiraDiscordHook(rewards).setupKiraDiscord()) {
-            rewards.logger.info("###################################")
-            rewards.logger.info("#         KiraDiscord Found       #")
-            rewards.logger.info("#      You can now use discord    #")
-            rewards.logger.info("#          linked rewards         #")
-            rewards.logger.info("###################################")
+            rewards.logger.info("KiraDiscord found, now you can use discord rewards.")
         } else {
-            rewards.logger.info("###################################")
-            rewards.logger.info("#     KiraDiscord not Found       #")
-            rewards.logger.info("###################################")
+            rewards.logger.info("KiraDiscord not found, you can't use discord rewards.")
         }
     }
 
