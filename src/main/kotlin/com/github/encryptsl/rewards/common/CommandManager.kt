@@ -40,7 +40,7 @@ class CommandManager(private val rewards: Rewards) {
         )
     }
     private fun registerSuggestionProviders(commandManager: PaperCommandManager<CommandSender>) {
-        commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, input ->
+        commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, _ ->
             CompletableFuture.completedFuture(Bukkit.getOfflinePlayers()
                 .map { Suggestion.simple(it.name ?: it.uniqueId.toString()) }
             )
