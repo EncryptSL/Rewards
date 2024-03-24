@@ -148,7 +148,7 @@ class OpenGUI(private val rewards: Rewards) {
                             if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
                                 if (rewards.config.getBoolean("gui.rewards.$reward.requires.discord")) {
                                     try {
-                                        if (!kiraDiscordHook.isLinked(whoClicked) || !discordSrvHook.isLinked(whoClicked))
+                                        if (!kiraDiscordHook.isLinked(whoClicked) && !discordSrvHook.isLinked(whoClicked))
                                             return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-discord-link"))
                                     } catch (e : DiscordSrvException) {
                                         return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
