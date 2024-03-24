@@ -32,9 +32,9 @@ class Rewards : JavaPlugin() {
             .createFromResources("database.db", this)
 
         DatabaseConnector().initConnect(
-            config.getString("database.host") ?: "jdbc:sqlite:plugins/Rewards/database.db",
-            config.getString("database.username") ?: "root",
-            config.getString("database.password") ?: "admin"
+            config.getString("database.host", "jdbc:sqlite:plugins/Rewards/database.db").toString(),
+            config.getString("database.username", "root").toString(),
+            config.getString("database.password", "admin").toString()
         )
     }
 

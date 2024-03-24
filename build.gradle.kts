@@ -27,6 +27,7 @@ dependencies {
     implementation("dev.triumphteam:triumph-gui:3.1.7")
     implementation("org.incendo:cloud-paper:2.0.0-beta.2")
     implementation("org.incendo:cloud-annotations:2.0.0-beta.2")
+    implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
 }
 

@@ -6,6 +6,7 @@ import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvException
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvHook
+import com.github.encryptsl.rewards.common.hook.kira.KiraDiscordException
 import com.github.encryptsl.rewards.common.hook.kira.KiraDiscordHook
 import dev.triumphteam.gui.builder.item.ItemBuilder
 import dev.triumphteam.gui.guis.Gui
@@ -94,43 +95,28 @@ class OpenGUI(private val rewards: Rewards) {
             for (reward in rewards.config.getConfigurationSection("gui.rewards")?.getKeys(false)!!) {
                 if (!rewards.config.contains("gui.rewards.$reward.display.name"))
                     return player.sendMessage(
-                        ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.rewards.error.missing-name"),
-                            Placeholder.parsed("reward", reward)
-                        )
+                        rewards.locale.translation("messages.rewards.error.missing-name", Placeholder.parsed("reward", reward))
                     )
 
                 if (!rewards.config.contains("gui.rewards.$reward.display.slot"))
                     return player.sendMessage(
-                        ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.rewards.error.missing-slot"),
-                            Placeholder.parsed("reward", reward)
-                        )
+                        rewards.locale.translation("messages.rewards.error.missing-slot", Placeholder.parsed("reward", reward))
                     )
 
                 if (!rewards.config.contains("gui.rewards.$reward.display.icon"))
                     return player.sendMessage(
-                        ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.rewards.error.missing-icon"),
-                            Placeholder.parsed("reward", reward)
-                        )
+                        rewards.locale.translation("messages.rewards.error.missing-icon", Placeholder.parsed("reward", reward))
                     )
 
                 if (!rewards.config.contains("gui.rewards.$reward.lore"))
                     return player.sendMessage(
-                        ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.rewards.error.missing-lore"),
-                            Placeholder.parsed("reward", reward)
-                        )
-                    )
+                        rewards.locale.translation("messages.rewards.error.missing-lore", Placeholder.parsed("reward", reward)
+                    ))
 
                 if (!rewards.config.contains("gui.rewards.$reward.commands"))
                     return player.sendMessage(
-                        ModernText.miniModernText(
-                            rewards.locale.getMessage("messages.rewards.error.missing-commands"),
-                            Placeholder.parsed("reward", reward)
-                        )
-                    )
+                        rewards.locale.translation("messages.rewards.error.missing-commands", Placeholder.parsed("reward", reward)
+                    ))
 
                 if (rewards.config.getString("gui.rewards.$reward.display.icon").equals(material.name, true)) {
                     val name = rewards.config.getString("gui.rewards.$reward.display.name").toString()
@@ -139,14 +125,16 @@ class OpenGUI(private val rewards: Rewards) {
                     val commands = rewards.config.getStringList("gui.rewards.$reward.commands")
                     val cooldown = rewards.config.getInt("gui.rewards.$reward.requires.cooldown")
                     val hasCooldown = rewards.rewardsAPI.hasCooldown(player.uniqueId, reward)
-                    val remaining = rewards.rewardsAPI.getRemainingDuration(player.uniqueId, reward)
+                    val date = rewards.rewardsAPI.getRemainingDuration(player.uniqueId, reward)
+                    val remaining = date?.let { convertFancyTime(it, pattern) }.toString()
 
                     val availableAt =
                         if (hasCooldown)
-                            rewards.locale.getMessage("messages.rewards.available_at")
-                                .replace("<available_at>", remaining?.let { convertFancyTime(it, pattern) }.toString())
+                            rewards.locale.translation("messages.rewards.available_at",
+                                Placeholder.parsed("<available_at>", remaining)
+                            )
                         else
-                            rewards.locale.getMessage("messages.rewards.is_available")
+                            rewards.locale.translation("messages.rewards.is_available")
 
                     val guiItem = ItemBuilder.from(itemFactory.item(material, name, lore, availableAt)).asGuiItem { action ->
                         val whoClicked = action.whoClicked as Player
@@ -154,29 +142,31 @@ class OpenGUI(private val rewards: Rewards) {
                             if (rewards.config.contains("gui.rewards.$reward.requires.permissions")) {
                                 val permission = rewards.config.getString("gui.rewards.$reward.requires.permissions").toString()
                                 if (!whoClicked.hasPermission(permission))
-                                    return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-permissions")))
+                                    return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-permissions"))
                             }
 
                             if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
                                 if (rewards.config.getBoolean("gui.rewards.$reward.requires.discord")) {
                                     try {
-                                        if (!kiraDiscordHook.isLinked(whoClicked) || discordSrvHook.isLinked(whoClicked))
-                                            return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.missing-discord-link")))
+                                        if (!kiraDiscordHook.isLinked(whoClicked) || !discordSrvHook.isLinked(whoClicked))
+                                            return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-discord-link"))
                                     } catch (e : DiscordSrvException) {
+                                        return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
+                                    } catch (e : KiraDiscordException) {
                                         return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
                                     }
                                 }
                             }
 
                             if (hasCooldown)
-                                return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.error.claimed"),
-                                    Placeholder.parsed("available_at", remaining?.let { convertFancyTime(it, pattern) }.toString())
+                                return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.claimed",
+                                    Placeholder.parsed("available_at", remaining)
                                 ))
 
                             rewards.rewardsAPI.claimReward(whoClicked, reward, Duration.ofMinutes(cooldown.toLong()))
                             rewards.rewardsAPI.receiveReward(whoClicked, commands, reward)
-                            whoClicked.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.success.claim"), TagResolver.resolver(
-                                Placeholder.parsed("available_at", remaining?.let { convertFancyTime(it, pattern) }.toString()),
+                            whoClicked.sendMessage(rewards.locale.translation("messages.rewards.success.claim", TagResolver.resolver(
+                                Placeholder.parsed("available_at", remaining),
                                 Placeholder.parsed("reward", name)
                             )))
                             player.closeInventory()

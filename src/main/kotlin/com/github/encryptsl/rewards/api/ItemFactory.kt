@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack
 
 class ItemFactory {
 
-    fun item(material: Material, displayName: String, lore: List<String>, availableAt: String): ItemStack {
+    fun item(material: Material, displayName: String, lore: List<String>, availableAt: Component): ItemStack {
         val itemStack = ItemStack(material, 1)
         val itemMeta = itemStack.itemMeta
 
@@ -19,7 +19,7 @@ class ItemFactory {
             val newList: MutableList<Component> = ArrayList()
             for (loreItem in lore) {
                 newList.add(ModernText.miniModernText(loreItem, TagResolver.resolver(
-                    Placeholder.parsed("cooldown", availableAt),
+                    Placeholder.component("cooldown", availableAt),
                 )))
             }
             itemMeta.lore(newList)

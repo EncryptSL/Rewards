@@ -37,14 +37,14 @@ class RewardCmd(private val rewards: Rewards) {
         @Argument(value = "reward", suggestions = "rewards") reward: String
     ) {
         if (!rewards.rewardsAPI.hasClaimReward(target.uniqueId, reward))
-            return commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.player-not-exist"), TagResolver.resolver(
+            return commandSender.sendMessage(rewards.locale.translation("messages.plugin.player-not-exist", TagResolver.resolver(
                 Placeholder.parsed("player", target.name.toString()),
                 Placeholder.parsed("reward", reward),
             )))
 
         rewards.rewardsAPI.resetCooldown(target.uniqueId, reward)
 
-        commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.rewards.success.reset"), TagResolver.resolver(
+        commandSender.sendMessage(rewards.locale.translation("messages.rewards.success.reset", TagResolver.resolver(
             Placeholder.parsed("player", target.name.toString()),
             Placeholder.parsed("reward", reward),
         )))
@@ -55,7 +55,7 @@ class RewardCmd(private val rewards: Rewards) {
     fun onConfigReload(commandSender: CommandSender) {
         rewards.reloadConfig()
         rewards.saveConfig()
-        commandSender.sendMessage(ModernText.miniModernText(rewards.locale.getMessage("messages.plugin.reload")))
+        commandSender.sendMessage(rewards.locale.translation("messages.plugin.reload"))
     }
 
     @Command("rewards admin debug")

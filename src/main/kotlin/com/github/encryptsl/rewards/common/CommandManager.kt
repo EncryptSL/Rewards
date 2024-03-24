@@ -2,6 +2,7 @@ package com.github.encryptsl.rewards.common
 
 
 import com.github.encryptsl.rewards.Rewards
+import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.commands.RewardCmd
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
@@ -9,6 +10,7 @@ import org.incendo.cloud.SenderMapper
 import org.incendo.cloud.annotations.AnnotationParser
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities
 import org.incendo.cloud.execution.ExecutionCoordinator
+import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler
 import org.incendo.cloud.paper.PaperCommandManager
 import org.incendo.cloud.suggestion.Suggestion
 import java.util.concurrent.CompletableFuture
@@ -39,6 +41,18 @@ class CommandManager(private val rewards: Rewards) {
             CommandSender::class.java,
         )
     }
+
+    private fun registerMinecraftExceptionHandler(commandManager: PaperCommandManager<CommandSender>) {
+        MinecraftExceptionHandler.createNative<CommandSender>()
+            .defaultHandlers()
+            .decorator { component ->
+                ModernText.miniModernText(rewards.config.getString("prefix", "<red>[<bold>!</bold>]").toString())
+                    .appendSpace()
+                    .append(component)
+            }
+            .registerTo(commandManager)
+    }
+
     private fun registerSuggestionProviders(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, _ ->
             CompletableFuture.completedFuture(Bukkit.getOfflinePlayers()
@@ -55,6 +69,7 @@ class CommandManager(private val rewards: Rewards) {
         try {
             rewards.logger.info("Registering commands with Cloud Command Framework !")
             val commandManager = createCommandManager()
+            registerMinecraftExceptionHandler(commandManager)
             registerSuggestionProviders(commandManager)
             val annotationParser = createAnnotationParser(commandManager)
             annotationParser.parse(RewardCmd(rewards))
