@@ -14,6 +14,15 @@ gui:
     border: YELLOW_STAINED_GLASS_PANE
   positions:
     rows: 3
+  click-sounds:
+    claim:
+      type: "block.note_block.bit"
+      volume: 1f
+      pitch: 1f
+    error:
+      type: "entity.villager.no"
+      volume: 1f
+      pitch: 1f
   rewards:
     player:
       display:

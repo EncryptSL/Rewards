@@ -4,6 +4,7 @@ import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.ItemFactory
 import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
+import com.github.encryptsl.rewards.common.extensions.playSound
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvException
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvHook
 import com.github.encryptsl.rewards.common.hook.kira.KiraDiscordException
@@ -128,6 +129,14 @@ class OpenGUI(private val rewards: Rewards) {
                     val date = rewards.rewardsAPI.getRemainingDuration(player.uniqueId, reward)
                     val remaining = date?.let { convertFancyTime(it, pattern) }.toString()
 
+                    val claimSound = rewards.config.getString("gui.click-sounds.claim.type").toString()
+                    val claimSoundPitch = rewards.config.getLong("gui.click-sounds.claim.pitch").toString().toFloat()
+                    val claimSoundVolume = rewards.config.getLong("gui.click-sounds.claim.volume").toString().toFloat()
+
+                    val errorSound = rewards.config.getString("gui.click-sounds.error.type").toString()
+                    val errorSoundPitch = rewards.config.getString("gui.click-sounds.error.pitch").toString().toFloat()
+                    val errorSoundVolume = rewards.config.getString("gui.click-sounds.error.volume").toString().toFloat()
+
                     val availableAt =
                         if (hasCooldown)
                             rewards.locale.translation("messages.rewards.available_at",
@@ -141,15 +150,19 @@ class OpenGUI(private val rewards: Rewards) {
                         if (action.isLeftClick || action.isRightClick) {
                             if (rewards.config.contains("gui.rewards.$reward.requires.permissions")) {
                                 val permission = rewards.config.getString("gui.rewards.$reward.requires.permissions").toString()
-                                if (!whoClicked.hasPermission(permission))
+                                if (!whoClicked.hasPermission(permission)) {
+                                    playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
                                     return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-permissions"))
+                                }
                             }
 
                             if (rewards.config.contains("gui.rewards.$reward.requires.discord")) {
                                 if (rewards.config.getBoolean("gui.rewards.$reward.requires.discord")) {
                                     try {
-                                        if (!kiraDiscordHook.isLinked(whoClicked) && !discordSrvHook.isLinked(whoClicked))
+                                        if (!kiraDiscordHook.isLinked(whoClicked) && !discordSrvHook.isLinked(whoClicked)) {
+                                            playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
                                             return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-discord-link"))
+                                        }
                                     } catch (e : DiscordSrvException) {
                                         return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
                                     } catch (e : KiraDiscordException) {
@@ -158,13 +171,16 @@ class OpenGUI(private val rewards: Rewards) {
                                 }
                             }
 
-                            if (hasCooldown)
+                            if (hasCooldown) {
+                                playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
                                 return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.claimed",
                                     Placeholder.parsed("available_at", remaining)
                                 ))
+                            }
 
                             rewards.rewardsAPI.claimReward(whoClicked, reward, Duration.ofMinutes(cooldown.toLong()))
                             rewards.rewardsAPI.receiveReward(whoClicked, commands, reward)
+                            playSound(whoClicked, claimSound, claimSoundVolume, claimSoundPitch)
                             whoClicked.sendMessage(rewards.locale.translation("messages.rewards.success.claim", TagResolver.resolver(
                                 Placeholder.parsed("available_at", remaining),
                                 Placeholder.parsed("reward", name)
@@ -179,7 +195,6 @@ class OpenGUI(private val rewards: Rewards) {
         }
 
         gui.open(player)
-
     }
 
 }
