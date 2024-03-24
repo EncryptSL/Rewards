@@ -131,7 +131,7 @@ class OpenGUI(private val rewards: Rewards) {
                     val availableAt =
                         if (hasCooldown)
                             rewards.locale.translation("messages.rewards.available_at",
-                                Placeholder.parsed("<available_at>", remaining)
+                                Placeholder.parsed("available_at", remaining)
                             )
                         else
                             rewards.locale.translation("messages.rewards.is_available")

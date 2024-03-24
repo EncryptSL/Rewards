@@ -15,7 +15,7 @@ class Locale(private val rewards: Rewards) {
         return ModernText.miniModernText(getMessage(key))
     }
 
-    private fun getMessage(key: String): String {
+    fun getMessage(key: String): String {
         val prefix = rewards.config.getString("prefix").toString()
         return rewards.config.getString(key).toString().replace("<prefix>", prefix)
     }
