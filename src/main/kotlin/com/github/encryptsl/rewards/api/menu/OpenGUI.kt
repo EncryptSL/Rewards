@@ -130,8 +130,8 @@ class OpenGUI(private val rewards: Rewards) {
                     val remaining = date?.let { convertFancyTime(it, pattern) }.toString()
 
                     val claimSound = rewards.config.getString("gui.click-sounds.claim.type").toString()
-                    val claimSoundPitch = rewards.config.getLong("gui.click-sounds.claim.pitch").toString().toFloat()
-                    val claimSoundVolume = rewards.config.getLong("gui.click-sounds.claim.volume").toString().toFloat()
+                    val claimSoundPitch = rewards.config.getString("gui.click-sounds.claim.pitch").toString().toFloat()
+                    val claimSoundVolume = rewards.config.getString("gui.click-sounds.claim.volume").toString().toFloat()
 
                     val errorSound = rewards.config.getString("gui.click-sounds.error.type").toString()
                     val errorSoundPitch = rewards.config.getString("gui.click-sounds.error.pitch").toString().toFloat()

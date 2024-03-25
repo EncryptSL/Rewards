@@ -16,7 +16,7 @@ gui:
     rows: 3
   click-sounds:
     claim:
-      type: "block.note_block.bit"
+      type: "entity.player.levelup"
       volume: 1f
       pitch: 1f
     error:
