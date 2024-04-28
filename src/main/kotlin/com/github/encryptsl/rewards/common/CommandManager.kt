@@ -56,12 +56,14 @@ class CommandManager(private val rewards: Rewards) {
     private fun registerSuggestionProviders(commandManager: PaperCommandManager<CommandSender>) {
         commandManager.parserRegistry().registerSuggestionProvider("offlinePlayers") { _, _ ->
             CompletableFuture.completedFuture(Bukkit.getOfflinePlayers()
-                .map { Suggestion.simple(it.name ?: it.uniqueId.toString()) }
+                .map { Suggestion.suggestion(it.name ?: it.uniqueId.toString()) }
             )
         }
 
         commandManager.parserRegistry().registerSuggestionProvider("rewards") { _, _ ->
-            CompletableFuture.completedFuture(rewards.config.getConfigurationSection("gui.rewards")?.getKeys(false)?.map { Suggestion.simple(it) }!!)
+            CompletableFuture
+                .completedFuture(rewards.config.getConfigurationSection("gui.rewards")
+                    ?.getKeys(false)?.map { Suggestion.suggestion(it) }!!)
         }
     }
 
