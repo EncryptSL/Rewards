@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://nexus.scarsz.me/content/groups/public/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 kotlin {
@@ -25,7 +26,7 @@ dependencies {
     compileOnly(kotlin("stdlib", "1.9.23"))
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
-    compileOnly("com.github.encryptsl.kira:KiraDiscord:1.0.0")
+    compileOnly("com.github.encryptsl:KiraDiscord:1.0.3")
     compileOnly("org.jetbrains.exposed:exposed-core:0.49.0")
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.49.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0")

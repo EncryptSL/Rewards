@@ -14,7 +14,7 @@ class DiscordSrvHook(private val rewards: Rewards) {
         return try {
             Class.forName("github.scarsz.discordsrv.DiscordSRV")
             true
-        } catch (e : ClassNotFoundException) {
+        } catch (_ : ClassNotFoundException) {
             false
         }
     }

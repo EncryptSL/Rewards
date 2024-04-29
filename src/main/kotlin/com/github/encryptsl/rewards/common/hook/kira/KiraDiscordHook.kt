@@ -14,7 +14,7 @@ class KiraDiscordHook(private val rewards: Rewards) {
         return try {
             Class.forName("com.github.encryptsl.kira.KiraPlugin")
             true
-        } catch (e : ClassNotFoundException) {
+        } catch (_ : ClassNotFoundException) {
             false
         }
     }
