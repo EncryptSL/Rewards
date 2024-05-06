@@ -56,6 +56,9 @@ tasks {
         }
     }
     shadowJar {
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "spigot"
+        }
         minimize {
             relocate("org.incendo.cloud", "cloud-core")
             relocate("dev.triumphteam.gui", "triumpteam")
