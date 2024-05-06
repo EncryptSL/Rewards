@@ -27,8 +27,7 @@ class CommandManager(private val rewards: Rewards) {
         if (commandManager.hasCapability(CloudBukkitCapabilities.BRIGADIER)) {
             commandManager.registerBrigadier()
             commandManager.brigadierManager().setNativeNumberSuggestions(false)
-        }
-        if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        } else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             (commandManager as PaperCommandManager<*>).registerAsynchronousCompletions()
         }
         return commandManager
