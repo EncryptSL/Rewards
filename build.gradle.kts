@@ -32,9 +32,14 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0")
 
     implementation("dev.triumphteam:triumph-gui:3.1.7")
-    implementation("org.incendo:cloud-paper:2.0.0-beta.5")
-    implementation("org.incendo:cloud-annotations:2.0.0-beta.5")
-    implementation("org.incendo:cloud-minecraft-extras:2.0.0-beta.5")
+    implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
+    implementation("org.incendo:cloud-annotations:2.0.0-SNAPSHOT") {
+        exclude(group = "org.incendo", module = "cloud-core")
+    }
+    implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT") {
+        exclude(group = "net.kyori")
+        exclude(group = "org.incendo", module = "cloud-core")
+    }
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
 }
 

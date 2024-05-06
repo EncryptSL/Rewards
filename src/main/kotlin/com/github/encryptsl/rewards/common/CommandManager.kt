@@ -35,10 +35,7 @@ class CommandManager(private val rewards: Rewards) {
 
 
     private fun createAnnotationParser(commandManager: PaperCommandManager<CommandSender>): AnnotationParser<CommandSender> {
-        return AnnotationParser(
-            commandManager,
-            CommandSender::class.java,
-        )
+        return AnnotationParser(commandManager, CommandSender::class.java,)
     }
 
     private fun registerMinecraftExceptionHandler(commandManager: PaperCommandManager<CommandSender>) {
