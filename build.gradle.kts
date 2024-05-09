@@ -43,6 +43,17 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
 }
 
+sourceSets {
+    getByName("main") {
+        java {
+            srcDir("src/main/java")
+        }
+        kotlin {
+            srcDir("src/main/kotlin")
+        }
+    }
+}
+
 tasks {
     build {
         dependsOn(shadowJar)
@@ -54,10 +65,21 @@ tasks {
         filesMatching(listOf("plugin.yml")) {
             expand(project.properties)
         }
+        filesMatching("paper-plugin.yml") {
+            expand(project.properties)
+        }
+    }
+    compileJava {
+        options.encoding = "UTF-8"
+        options.release.set(21)
+        options.compilerArgs.add("-Xlint:deprecation")
+    }
+    compileKotlin {
+        kotlinOptions.jvmTarget = "21"
     }
     shadowJar {
         manifest {
-            attributes["paperweight-mappings-namespace"] = "spigot"
+            attributes["paperweight-mappings-namespace"] = "mojang"
         }
         minimize {
             relocate("org.incendo.cloud", "cloud-core")

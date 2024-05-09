@@ -1,0 +1,41 @@
+# noinspection YAMLSchemaValidation
+name: "${name}"
+# noinspection YAMLSchemaValidation
+main: "com.github.encryptsl.rewards.Rewards"
+version: ${version}
+api-version: '1.19'
+
+prefix: Rewards
+author: EncryptSL
+website: https://encryptsl.github.io/
+
+load: POSTWORLD
+
+dependencies:
+  server:
+    DiscordSRV:
+      required: false
+    KiraDiscord:
+      required: false
+
+description: ${description}
+
+permissions:
+  rewards.*:
+    description: "Full access for permissions from this plugin"
+    default: op
+    children:
+      rewards.admin: true
+      reward.player: true
+  rewards.admin:
+    description: "Full access for admins."
+    default: false
+    children:
+      rewards.admin.reset: true
+      rewards.admin.reload: true
+      rewards.admin.debug: true
+  reward.player:
+    description: "Access for permissions to players."
+    default: true
+    children:
+      reward.menu: true
