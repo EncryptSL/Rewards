@@ -4,6 +4,7 @@ name: "${name}"
 main: "com.github.encryptsl.rewards.Rewards"
 version: ${version}
 api-version: '1.19'
+loader: "com.github.encryptsl.rewards.RewardsLoader"
 
 prefix: Rewards
 author: EncryptSL
