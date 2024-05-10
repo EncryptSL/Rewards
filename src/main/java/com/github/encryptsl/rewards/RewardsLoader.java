@@ -7,21 +7,50 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.jetbrains.annotations.NotNull;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({"UnstableApiUsage", "unused"})
 public class RewardsLoader implements PluginLoader {
+
     @Override
-    public void classloader(@NotNull PluginClasspathBuilder pluginClasspathBuilder) {
+    public void classloader(@NotNull PluginClasspathBuilder pluginClasspath) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
 
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:5.1.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.exposed:exposed-core:0.49.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.exposed:exposed-jdbc:0.49.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0"), null));
+        resolveLibraries().stream()
+                .map(DefaultArtifact::new)
+                .forEach(artifact -> resolver.addDependency(new Dependency(artifact, null)));
 
         resolver.addRepository(new RemoteRepository.Builder("paper", "default", "https://repo.papermc.io/repository/maven-public/").build());
-
-        pluginClasspathBuilder.addLibrary(resolver);
+        pluginClasspath.addLibrary(resolver);
     }
+
+    private List<String> resolveLibraries() {
+        try {
+            return readLibraryListFromYaml();
+        } catch (IOException e) {
+            e.fillInStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    private List<String> readLibraryListFromYaml() throws IOException {
+        Yaml yaml = new Yaml();
+        InputStream inputStream = RewardsLoader.class.getClassLoader()
+                .getResourceAsStream("paper-libraries.yml");
+
+        if (inputStream == null) {
+            System.err.println("paper-libraries.yml not found in the classpath.");
+        }
+
+        Map<String, List<String>> data = yaml.load(inputStream);
+
+        return data.get("libraries");
+    }
+
 }
