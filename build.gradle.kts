@@ -32,6 +32,7 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.49.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0")
 
+    implementation("com.github.encryptsl:KMonoLib:1.0.0")
     implementation("dev.triumphteam:triumph-gui:3.1.8-SNAPSHOT") {
         exclude("net.kyori")
     }
@@ -85,6 +86,7 @@ tasks {
             attributes["paperweight-mappings-namespace"] = "mojang"
         }
         minimize {
+            relocate("com.github.encryptsl.kmono.lib", "kmono-lib")
             relocate("org.incendo.cloud", "cloud-core")
             relocate("dev.triumphteam.gui", "triumpteam")
         }

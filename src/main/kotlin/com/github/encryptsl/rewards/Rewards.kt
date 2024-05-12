@@ -15,7 +15,7 @@ class Rewards : JavaPlugin() {
     private val commandManager: CommandManager by lazy { CommandManager(this) }
     private val configLoader: ConfigLoader by lazy { ConfigLoader() }
     private val hookManager: HookManager by lazy { HookManager(this) }
-
+    private val database: DatabaseConnector by lazy { DatabaseConnector(this) }
 
     val rewardTasks: RewardTasks by lazy { RewardTasks(this) }
     val rewardModel: RewardsModel by lazy { RewardsModel(this) }
@@ -31,7 +31,7 @@ class Rewards : JavaPlugin() {
             .createFromResources("config.yml", this)
             .createFromResources("database.db", this)
 
-        DatabaseConnector().initConnect(
+        database.initConnect(
             config.getString("database.host", "jdbc:sqlite:plugins/Rewards/database.db").toString(),
             config.getString("database.username", "root").toString(),
             config.getString("database.password", "admin").toString()
