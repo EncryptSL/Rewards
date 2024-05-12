@@ -13,6 +13,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://nexus.scarsz.me/content/groups/public/")
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://repo.triumphteam.dev/snapshots/")
 }
 
 kotlin {
@@ -31,7 +32,9 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-jdbc:0.49.0")
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0")
 
-    implementation("dev.triumphteam:triumph-gui:3.1.7")
+    implementation("dev.triumphteam:triumph-gui:3.1.8-SNAPSHOT") {
+        exclude("net.kyori")
+    }
     implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
     implementation("org.incendo:cloud-annotations:2.0.0-SNAPSHOT") {
         exclude(group = "org.incendo", module = "cloud-core")
