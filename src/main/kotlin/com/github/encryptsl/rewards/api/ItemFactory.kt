@@ -1,6 +1,6 @@
 package com.github.encryptsl.rewards.api
 
-import com.github.encryptsl.rewards.api.objects.ModernText
+import com.github.encryptsl.kmono.lib.api.ModernText
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver

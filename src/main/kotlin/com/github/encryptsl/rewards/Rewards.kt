@@ -1,7 +1,7 @@
 package com.github.encryptsl.rewards
 
+import com.github.encryptsl.kmono.lib.api.config.loader.ConfigLoader
 import com.github.encryptsl.rewards.api.RewardsAPI
-import com.github.encryptsl.rewards.api.config.ConfigLoader
 import com.github.encryptsl.rewards.common.CommandManager
 import com.github.encryptsl.rewards.common.Locale
 import com.github.encryptsl.rewards.common.database.DatabaseConnector
@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class Rewards : JavaPlugin() {
 
     private val commandManager: CommandManager by lazy { CommandManager(this) }
-    private val configLoader: ConfigLoader by lazy { ConfigLoader() }
+    private val configLoader: ConfigLoader by lazy { ConfigLoader(this) }
     private val hookManager: HookManager by lazy { HookManager(this) }
     private val database: DatabaseConnector by lazy { DatabaseConnector(this) }
 

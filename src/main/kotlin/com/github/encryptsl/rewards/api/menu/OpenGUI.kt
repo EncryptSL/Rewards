@@ -1,8 +1,8 @@
 package com.github.encryptsl.rewards.api.menu
 
+import com.github.encryptsl.kmono.lib.api.ModernText
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.ItemFactory
-import com.github.encryptsl.rewards.api.objects.ModernText
 import com.github.encryptsl.rewards.common.extensions.convertFancyTime
 import com.github.encryptsl.rewards.common.extensions.playSound
 import com.github.encryptsl.rewards.common.hook.discordsrv.DiscordSrvException
@@ -145,14 +145,17 @@ class OpenGUI(private val rewards: Rewards) {
                         else
                             rewards.locale.translation("messages.rewards.is_available")
 
-                    val guiItem = ItemBuilder.from(itemFactory.item(material, name, lore, availableAt)).asGuiItem { action ->
+                    val guiItem = ItemBuilder.from(itemFactory.item(material, name, lore, availableAt)).asGuiItem()
+
+
+                    guiItem.setAction{ action ->
                         val whoClicked = action.whoClicked as Player
                         if (action.isLeftClick || action.isRightClick) {
                             if (rewards.config.contains("gui.rewards.$reward.requires.permissions")) {
                                 val permission = rewards.config.getString("gui.rewards.$reward.requires.permissions").toString()
                                 if (!whoClicked.hasPermission(permission)) {
                                     playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
-                                    return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-permissions"))
+                                    return@setAction whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-permissions"))
                                 }
                             }
 
@@ -161,19 +164,19 @@ class OpenGUI(private val rewards: Rewards) {
                                     try {
                                         if (!kiraDiscordHook.isLinked(whoClicked) && !discordSrvHook.isLinked(whoClicked)) {
                                             playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
-                                            return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-discord-link"))
+                                            return@setAction whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.missing-discord-link"))
                                         }
                                     } catch (e : DiscordSrvException) {
-                                        return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
+                                        return@setAction whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
                                     } catch (e : KiraDiscordException) {
-                                        return@asGuiItem whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
+                                        return@setAction whoClicked.sendMessage(ModernText.miniModernText(e.message ?: e.localizedMessage))
                                     }
                                 }
                             }
 
                             if (hasCooldown) {
                                 playSound(whoClicked, errorSound, errorSoundVolume, errorSoundPitch)
-                                return@asGuiItem whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.claimed",
+                                return@setAction whoClicked.sendMessage(rewards.locale.translation("messages.rewards.error.claimed",
                                     Placeholder.parsed("available_at", remaining)
                                 ))
                             }

@@ -1,9 +1,9 @@
 package com.github.encryptsl.rewards.commands
 
 
+import com.github.encryptsl.kmono.lib.api.ModernText
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.menu.OpenGUI
-import com.github.encryptsl.rewards.api.objects.ModernText
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.OfflinePlayer
