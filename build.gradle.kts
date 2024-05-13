@@ -28,9 +28,9 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl:KiraDiscord:1.0.4")
-    compileOnly("org.jetbrains.exposed:exposed-core:0.49.0")
-    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.49.0")
-    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.49.0")
+    compileOnly("org.jetbrains.exposed:exposed-core:0.50.1")
+    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.50.1")
+    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.50.1")
 
     implementation("com.github.encryptsl:KMonoLib:1.0.0")
     implementation("dev.triumphteam:triumph-gui:3.1.8-SNAPSHOT") {
