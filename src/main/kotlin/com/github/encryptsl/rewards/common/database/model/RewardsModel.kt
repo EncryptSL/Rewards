@@ -41,19 +41,18 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
 
     override fun hasClaimReward(uuid: UUID, rewardType: String): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
-        transaction {
-            future.completeAsync {
-                !RewardTable.select(RewardTable.uuid, RewardTable.reward_type)
-                    .where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType))
-                    .empty()
-            }
+        val boolean = transaction {
+            !RewardTable.select(RewardTable.uuid, RewardTable.reward_type)
+                .where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType))
+                .empty()
         }
+        future.completeAsync { boolean }
         return future
     }
 
     override fun hasCooldown(uuid: UUID, rewardType: String): CompletableFuture<Boolean>  {
         val future = CompletableFuture<Boolean>()
-        transaction {
+        val boolean = transaction {
             val cooldown =
                 RewardTable.select(
                     RewardTable.claimed_at,
@@ -61,11 +60,9 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
                     RewardTable.uuid
                 ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
-            future.completeAsync {
-                cooldown != null && Clock.System.now().toJavaInstant()
-                    .isBefore(cooldown[RewardTable.claimed_at].toJavaInstant())
-            }
+            return@transaction cooldown != null && Clock.System.now().toJavaInstant().isBefore(cooldown[RewardTable.claimed_at].toJavaInstant())
         }
+        future.completeAsync { boolean }
         return future
     }
 
@@ -81,7 +78,7 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
 
     override fun getRemainingDate(uuid: UUID, rewardType: String): CompletableFuture<Date?> {
         val future = CompletableFuture<Date?>()
-        transaction {
+        val date = transaction {
             val query =
                 RewardTable.select(
                     RewardTable.uuid,
@@ -89,8 +86,9 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
                     RewardTable.claimed_at
                 ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
-            future.completeAsync { Date.from(query?.get(RewardTable.claimed_at)?.toJavaInstant()) }
+            return@transaction Date.from(query?.get(RewardTable.claimed_at)?.toJavaInstant())
         }
+        future.completeAsync { date }
         return future
     }
 
