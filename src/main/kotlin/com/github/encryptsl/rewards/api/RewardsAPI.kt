@@ -30,11 +30,11 @@ class RewardsAPI(private val rewards: Rewards) : Reward {
     }
 
     override fun hasClaimReward(uuid: UUID, rewardType: String): Boolean {
-        return rewards.rewardModel.hasClaimReward(uuid, rewardType)
+        return rewards.rewardModel.hasClaimReward(uuid, rewardType).join()
     }
 
     override fun hasCooldown(uuid: UUID, rewardType: String): Boolean {
-        return rewards.rewardModel.hasCooldown(uuid, rewardType)
+        return rewards.rewardModel.hasCooldown(uuid, rewardType).join()
     }
 
     override fun resetCooldown(uuid: UUID, rewardType: String) {
@@ -42,7 +42,7 @@ class RewardsAPI(private val rewards: Rewards) : Reward {
     }
 
     override fun getRemainingDuration(uuid: UUID, rewardType: String): Date? {
-        return rewards.rewardModel.getRemainingDate(uuid, rewardType)
+        return rewards.rewardModel.getRemainingDate(uuid, rewardType).join()
     }
 
 

@@ -40,17 +40,11 @@ class Rewards : JavaPlugin() {
 
     override fun onEnable() {
         commandManager.registerCommands()
-        hookRegistration()
+        hookManager.hookPlugins()
         logger.info("Plugins Rewards is loaded !")
     }
 
     override fun onDisable() {
         logger.info("Plugins Rewards is disabled !")
     }
-
-    private fun hookRegistration() {
-        hookManager.hookDiscordSrv()
-        hookManager.hookKiraDiscord()
-    }
-
 }

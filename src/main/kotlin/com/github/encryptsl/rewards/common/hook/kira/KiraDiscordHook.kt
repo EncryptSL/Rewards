@@ -1,27 +1,18 @@
 package com.github.encryptsl.rewards.common.hook.kira
 
 import com.github.encryptsl.kira.api.KiraAPI
+import com.github.encryptsl.kmono.lib.api.hook.PluginHook
 import com.github.encryptsl.rewards.Rewards
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-class KiraDiscordHook(private val rewards: Rewards) {
+class KiraDiscordHook(private val rewards: Rewards) : PluginHook("KiraDiscord") {
 
     private val pluginName = "KiraDiscord"
 
-    fun setupKiraDiscord(): Boolean
-    {
-        return try {
-            Class.forName("com.github.encryptsl.kira.KiraPlugin")
-            true
-        } catch (_ : ClassNotFoundException) {
-            false
-        }
-    }
-
     fun isLinked(player: Player): Boolean
     {
-        if (!setupKiraDiscord())
+        if (!isPluginEnabled())
             throw KiraDiscordException(rewards.locale.getMessage("messages.plugin.dependency-missing").replace("<dependency>", pluginName))
 
         val plugin = Bukkit.getPluginManager().getPlugin(pluginName)!!

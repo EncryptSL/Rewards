@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Duration
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 class RewardsModel(private val rewards: Rewards) : RewardsSQL {
 
@@ -38,22 +39,34 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
         }
     }
 
-    override fun hasClaimReward(uuid: UUID, rewardType: String): Boolean = transaction {
-        !RewardTable.select(RewardTable.uuid, RewardTable.reward_type)
-            .where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType))
-            .empty()
+    override fun hasClaimReward(uuid: UUID, rewardType: String): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
+        transaction {
+            future.completeAsync {
+                !RewardTable.select(RewardTable.uuid, RewardTable.reward_type)
+                    .where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType))
+                    .empty()
+            }
+        }
+        return future
     }
 
-    override fun hasCooldown(uuid: UUID, rewardType: String): Boolean = transaction {
-        val cooldown =
-            RewardTable.select(
-                RewardTable.claimed_at,
-                RewardTable.reward_type,
-                RewardTable.uuid
-            ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
+    override fun hasCooldown(uuid: UUID, rewardType: String): CompletableFuture<Boolean>  {
+        val future = CompletableFuture<Boolean>()
+        transaction {
+            val cooldown =
+                RewardTable.select(
+                    RewardTable.claimed_at,
+                    RewardTable.reward_type,
+                    RewardTable.uuid
+                ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
-        cooldown != null && Clock.System.now().toJavaInstant()
-            .isBefore(cooldown[RewardTable.claimed_at].toJavaInstant())
+            future.completeAsync {
+                cooldown != null && Clock.System.now().toJavaInstant()
+                    .isBefore(cooldown[RewardTable.claimed_at].toJavaInstant())
+            }
+        }
+        return future
     }
 
     override fun resetCooldown(uuid: UUID, rewardType: String) {
@@ -66,15 +79,19 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
         }
     }
 
-    override fun getRemainingDate(uuid: UUID, rewardType: String): Date? = transaction {
-        val query =
-            RewardTable.select(
-                RewardTable.uuid,
-                RewardTable.reward_type,
-                RewardTable.claimed_at
-            ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
+    override fun getRemainingDate(uuid: UUID, rewardType: String): CompletableFuture<Date?> {
+        val future = CompletableFuture<Date?>()
+        transaction {
+            val query =
+                RewardTable.select(
+                    RewardTable.uuid,
+                    RewardTable.reward_type,
+                    RewardTable.claimed_at
+                ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
 
-        if (query != null) Date.from(query[RewardTable.claimed_at].toJavaInstant()) else null
+            future.completeAsync { Date.from(query?.get(RewardTable.claimed_at)?.toJavaInstant()) }
+        }
+        return future
     }
 
     fun dumpDatabase(): MutableMap<String, List<String>> = transaction {
