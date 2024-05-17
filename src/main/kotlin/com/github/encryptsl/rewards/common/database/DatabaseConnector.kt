@@ -18,7 +18,7 @@ class DatabaseConnector(private val rewards: Rewards) : DatabaseConnectorProvide
 
     override fun initConnect(jdbcHost: String, user: String, pass: String) {
 
-        DatabaseBuilder()
+        DatabaseBuilder.Builder()
             .setJdbc(jdbcHost)
             .setUser(user)
             .setPassword(pass)
