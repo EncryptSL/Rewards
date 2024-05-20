@@ -12,19 +12,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class DatabaseConnector(private val rewards: Rewards) : DatabaseConnectorProvider {
 
-    override fun dataSource(): HikariDataSource {
-        return HikariDataSource()
-    }
-
-    override fun initConnect(jdbcHost: String, user: String, pass: String) {
-
+    override fun createConnection(jdbcHost: String, user: String, pass: String) {
         DatabaseBuilder.Builder()
             .setJdbc(jdbcHost)
             .setUser(user)
             .setPassword(pass)
             .setConnectionPool(10)
             .setLogger(rewards.slF4JLogger)
-            .setDatasource(dataSource())
+            .setDatasource(HikariDataSource())
             .connect()
 
         transaction {

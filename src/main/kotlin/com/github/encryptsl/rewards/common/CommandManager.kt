@@ -2,6 +2,7 @@ package com.github.encryptsl.rewards.common
 
 
 import com.github.encryptsl.kmono.lib.api.ModernText
+import com.github.encryptsl.kmono.lib.api.commands.AnnotationCommandRegister
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.commands.RewardCmd
 import org.bukkit.Bukkit
@@ -55,12 +56,6 @@ class CommandManager(private val rewards: Rewards) {
                 .map { Suggestion.suggestion(it.name ?: it.uniqueId.toString()) }
             )
         }
-
-        commandManager.parserRegistry().registerSuggestionProvider("rewards") { _, _ ->
-            CompletableFuture
-                .completedFuture(rewards.config.getConfigurationSection("gui.rewards")
-                    ?.getKeys(false)?.map { Suggestion.suggestion(it) }!!)
-        }
     }
 
     fun registerCommands() {
@@ -70,7 +65,8 @@ class CommandManager(private val rewards: Rewards) {
             registerMinecraftExceptionHandler(commandManager)
             registerSuggestionProviders(commandManager)
             val annotationParser = createAnnotationParser(commandManager)
-            annotationParser.parse(RewardCmd(rewards))
+            val register = AnnotationCommandRegister(rewards, annotationParser, commandManager)
+            register.registerCommand(RewardCmd(rewards))
         } catch ( e : NoClassDefFoundError) {
             rewards.logger.error(e.message ?: e.localizedMessage)
         }

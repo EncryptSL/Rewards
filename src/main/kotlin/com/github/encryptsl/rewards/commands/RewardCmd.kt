@@ -2,6 +2,7 @@ package com.github.encryptsl.rewards.commands
 
 
 import com.github.encryptsl.kmono.lib.api.ModernText
+import com.github.encryptsl.kmono.lib.api.commands.AnnotationFeatures
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.api.menu.OpenGUI
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -9,16 +10,33 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.incendo.cloud.annotations.AnnotationParser
 import org.incendo.cloud.annotations.Argument
 import org.incendo.cloud.annotations.Command
 import org.incendo.cloud.annotations.CommandDescription
 import org.incendo.cloud.annotations.Permission
+import org.incendo.cloud.paper.LegacyPaperCommandManager
+import org.incendo.cloud.suggestion.Suggestion
+import java.util.concurrent.CompletableFuture
 
 @Suppress("UNUSED")
 @CommandDescription("Provided by plugin Rewards")
-class RewardCmd(private val rewards: Rewards) {
+class RewardCmd(private val rewards: Rewards) : AnnotationFeatures {
 
     private val rewardsMenu: OpenGUI by lazy { OpenGUI(rewards) }
+
+    override fun registerFeatures(
+        annotationParser: AnnotationParser<CommandSender>,
+        commandManager: LegacyPaperCommandManager<CommandSender>
+    ) {
+        commandManager.parserRegistry().registerSuggestionProvider("rewards") { _, _ ->
+            CompletableFuture
+                .completedFuture(rewards.config.getConfigurationSection("gui.rewards")
+                    ?.getKeys(false)?.map { Suggestion.suggestion(it) }!!)
+        }
+        annotationParser.parse(this)
+    }
+
 
     @Command("reward|odmena")
     @Permission("reward.menu")

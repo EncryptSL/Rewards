@@ -31,7 +31,7 @@ class Rewards : JavaPlugin() {
             .createFromResources("config.yml", this)
             .createFromResources("database.db", this)
 
-        database.initConnect(
+        database.createConnection(
             config.getString("database.host", "jdbc:sqlite:plugins/Rewards/database.db").toString(),
             config.getString("database.username", "root").toString(),
             config.getString("database.password", "admin").toString()
