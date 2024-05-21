@@ -84,9 +84,8 @@ class RewardsModel(private val rewards: Rewards) : RewardsSQL {
                     RewardTable.uuid,
                     RewardTable.reward_type,
                     RewardTable.claimed_at
-                ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()
-
-            return@transaction Date.from(query?.get(RewardTable.claimed_at)?.toJavaInstant())
+                ).where((RewardTable.uuid eq uuid.toString()) and (RewardTable.reward_type eq rewardType)).firstOrNull()?.get(RewardTable.claimed_at)
+            return@transaction Date.from(query?.toJavaInstant() ?: Clock.System.now().toJavaInstant())
         }
         future.completeAsync { date }
         return future

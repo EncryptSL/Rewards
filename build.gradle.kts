@@ -33,7 +33,7 @@ dependencies {
     compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.50.1")
 
     implementation("com.github.encryptsl:KMonoLib:1.0.0")
-    implementation("dev.triumphteam:triumph-gui:3.1.8-SNAPSHOT") {
+    implementation("dev.triumphteam:triumph-gui-paper:4.0.0-SNAPSHOT") {
         exclude("net.kyori")
     }
     implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")

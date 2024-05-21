@@ -41,9 +41,7 @@ class RewardCmd(private val rewards: Rewards) : AnnotationFeatures {
     @Command("reward|odmena")
     @Permission("reward.menu")
     fun onOpenRewardMenu(player: Player) {
-        rewards.rewardTasks.doSync {
-            rewardsMenu.openRewardGUI(player)
-        }
+        rewardsMenu.openRewardGUI(player)
     }
 
 
