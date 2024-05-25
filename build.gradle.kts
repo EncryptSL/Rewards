@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.0"
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
@@ -24,7 +26,7 @@ kotlin {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
-    compileOnly(kotlin("stdlib", "1.9.23"))
+    compileOnly(kotlin("stdlib", "2.0.0"))
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl:KiraDiscord:1.0.4")
@@ -44,7 +46,7 @@ dependencies {
         exclude(group = "net.kyori")
         exclude(group = "org.incendo", module = "cloud-core")
     }
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.0.0")
 }
 
 sourceSets {
@@ -57,6 +59,7 @@ sourceSets {
         }
     }
 }
+
 
 tasks {
     build {
@@ -79,7 +82,7 @@ tasks {
         options.compilerArgs.add("-Xlint:deprecation")
     }
     compileKotlin {
-        kotlinOptions.jvmTarget = "21"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
     shadowJar {
         manifest {
