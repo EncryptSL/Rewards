@@ -69,10 +69,7 @@ tasks {
         useJUnitPlatform()
     }
     processResources {
-        filesMatching(listOf("plugin.yml")) {
-            expand(project.properties)
-        }
-        filesMatching("paper-plugin.yml") {
+        filesMatching(listOf("plugin.yml", "paper-plugin.yml")) {
             expand(project.properties)
         }
     }
