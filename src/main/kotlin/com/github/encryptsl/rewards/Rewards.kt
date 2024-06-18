@@ -28,8 +28,8 @@ class Rewards : JavaPlugin() {
 
     override fun onLoad() {
         configLoader
-            .createFromResources("config.yml", this)
-            .createFromResources("database.db", this)
+            .createFromResources("config.yml")
+            .createFromResources("database.db")
 
         database.createConnection(
             config.getString("database.host", "jdbc:sqlite:plugins/Rewards/database.db").toString(),
