@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("io.github.goooler.shadow") version "8.1.7"
+    id("io.github.goooler.shadow") version "8.1.8"
 }
 
 group = "com.github.encryptsl"
@@ -30,9 +30,9 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:5.1.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl:KiraDiscord:1.0.6")
-    compileOnly("org.jetbrains.exposed:exposed-core:0.50.1")
-    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.50.1")
-    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.50.1")
+    compileOnly("org.jetbrains.exposed:exposed-core:0.52.1")
+    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.52.1")
+    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.52.1")
 
     implementation("com.github.encryptsl:KMonoLib:1.0.1")
     implementation("dev.triumphteam:triumph-gui-paper:4.0.0-SNAPSHOT") {
