@@ -3,17 +3,17 @@ package com.github.encryptsl.rewards.common
 
 import com.github.encryptsl.kmono.lib.api.ModernText
 import com.github.encryptsl.kmono.lib.api.commands.AnnotationCommandRegister
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.SenderMapper
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.annotations.AnnotationParser
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.bukkit.CloudBukkitCapabilities
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.execution.ExecutionCoordinator
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.minecraft.extras.MinecraftExceptionHandler
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.paper.LegacyPaperCommandManager
+import com.github.encryptsl.kmono.lib.dependencies.incendo.cloud.suggestion.Suggestion
 import com.github.encryptsl.rewards.Rewards
 import com.github.encryptsl.rewards.commands.RewardCmd
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import org.incendo.cloud.SenderMapper
-import org.incendo.cloud.annotations.AnnotationParser
-import org.incendo.cloud.bukkit.CloudBukkitCapabilities
-import org.incendo.cloud.execution.ExecutionCoordinator
-import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler
-import org.incendo.cloud.paper.LegacyPaperCommandManager
-import org.incendo.cloud.suggestion.Suggestion
 import java.util.concurrent.CompletableFuture
 
 class CommandManager(private val rewards: Rewards) {
