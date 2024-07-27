@@ -17,6 +17,7 @@ class DatabaseConnector(private val rewards: Rewards) : DatabaseConnectorProvide
             .setJdbc(jdbcHost)
             .setUser(user)
             .setPassword(pass)
+            .setConnectionPoolName(rewards.javaClass.simpleName)
             .setConnectionPool(10)
             .setLogger(rewards.slF4JLogger)
             .setDatasource(HikariDataSource())
