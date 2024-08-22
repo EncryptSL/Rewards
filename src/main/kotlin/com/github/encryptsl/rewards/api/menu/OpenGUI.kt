@@ -15,7 +15,10 @@ import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import org.bukkit.Material
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemType
 import java.time.Duration
 
 class OpenGUI(private val rewards: Rewards) {
@@ -77,10 +80,6 @@ class OpenGUI(private val rewards: Rewards) {
                             rewards.locale.translation("messages.rewards.error.missing-commands", Placeholder.parsed("reward", reward)
                         ))
 
-                    val material = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM).firstOrNull {
-                        el -> rewards.config.getString("gui.rewards.$reward.display.icon").equals(el.key().value(), true)
-                    } ?: return@render
-
                     val name = rewards.config.getString("gui.rewards.$reward.display.name").toString()
                     val slot = rewards.config.getInt("gui.rewards.$reward.display.slot")
                     val lore = rewards.config.getStringList("gui.rewards.$reward.lore")
@@ -98,12 +97,17 @@ class OpenGUI(private val rewards: Rewards) {
                     val errorSoundPitch = rewards.config.getString("gui.click-sounds.error.pitch").toString().toFloat()
                     val errorSoundVolume = rewards.config.getString("gui.click-sounds.error.volume").toString().toFloat()
 
+                    val material = if (hasCooldown)
+                        getIcon(rewards.config, reward, "available_icon")?.createItemStack()?.type ?: Material.CHEST
+                    else
+                        getIcon(rewards.config, reward, "not_available_icon")?.createItemStack()?.type ?: Material.MINECART
+
                     val availableAt = if (hasCooldown)
                         rewards.locale.translation("messages.rewards.available_at", Placeholder.parsed("available_at", remaining))
                     else
                         rewards.locale.translation("messages.rewards.is_available")
 
-                    val guiItem = ItemBuilder.from(itemFactory.item(material.createItemStack().type, name, lore, availableAt)).asGuiItem { player, _ ->
+                    val guiItem = ItemBuilder.from(itemFactory.item(material, name, lore, availableAt)).asGuiItem { player, _ ->
                         if (rewards.config.contains("gui.rewards.$reward.requires.permissions")) {
                             val permission = rewards.config.getString("gui.rewards.$reward.requires.permissions").toString()
                             if (!player.hasPermission(permission)) {
@@ -149,6 +153,12 @@ class OpenGUI(private val rewards: Rewards) {
                 }
             }
         }.build().open(player)
+    }
+
+    private fun getIcon(config: FileConfiguration, reward: String, typeIcon: String): ItemType? {
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM).firstOrNull { el ->
+            config.getString("gui.rewards.$reward.display.$typeIcon").equals(el.key().value(), true)
+        }
     }
 
 }

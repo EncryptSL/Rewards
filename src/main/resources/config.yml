@@ -27,7 +27,8 @@ gui:
     player:
       display:
         name: <gold><bold>Hráčská Odměna
-        icon: CHEST
+        available_icon: CHEST
+        not_available_icon: MINECART
         slot: 11
       lore:
         - ''
@@ -45,7 +46,8 @@ gui:
     vip:
       display:
         name: <yellow><bold>VIP Odměna
-        icon: CHEST
+        available_icon: CHEST
+        not_available_icon: MINECART
         slot: 13
       lore:
         - ''
@@ -63,7 +65,8 @@ gui:
     discord:
       display:
         name: <blue><bold>Discord Odměna
-        icon: ENDER_CHEST
+        available_icon: ENDER_CHEST
+        not_available_icon: MINECART
         slot: 15
       lore:
         - ''
