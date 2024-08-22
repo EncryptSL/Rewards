@@ -65,7 +65,7 @@ class OpenGUI(private val rewards: Rewards) {
                             rewards.locale.translation("messages.rewards.error.missing-slot", Placeholder.parsed("reward", reward))
                         )
 
-                    if (!rewards.config.contains("gui.rewards.$reward.display.icon"))
+                    if (!rewards.config.contains("gui.rewards.$reward.display.available_icon"))
                         return@render player.sendMessage(
                             rewards.locale.translation("messages.rewards.error.missing-icon", Placeholder.parsed("reward", reward))
                         )
