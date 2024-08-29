@@ -98,9 +98,9 @@ class OpenGUI(private val rewards: Rewards) {
                     val errorSoundVolume = rewards.config.getString("gui.click-sounds.error.volume").toString().toFloat()
 
                     val material = if (hasCooldown)
-                        getIcon(rewards.config, reward, "available_icon")?.createItemStack()?.type ?: Material.CHEST
+                        getIcon(rewards.config, reward, "not_available_icon")?.createItemStack()?.type ?: Material.CHEST
                     else
-                        getIcon(rewards.config, reward, "not_available_icon")?.createItemStack()?.type ?: Material.MINECART
+                        getIcon(rewards.config, reward, "available_icon")?.createItemStack()?.type ?: Material.MINECART
 
                     val availableAt = if (hasCooldown)
                         rewards.locale.translation("messages.rewards.available_at", Placeholder.parsed("available_at", remaining))
