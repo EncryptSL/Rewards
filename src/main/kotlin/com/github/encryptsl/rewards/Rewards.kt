@@ -18,7 +18,7 @@ class Rewards : JavaPlugin() {
     private val database: DatabaseConnector by lazy { DatabaseConnector(this) }
 
     val rewardTasks: RewardTasks by lazy { RewardTasks(this) }
-    val rewardModel: RewardsModel by lazy { RewardsModel() }
+    val rewardModel: RewardsModel by lazy { RewardsModel(this) }
     val rewardsAPI: RewardsAPI by lazy { RewardsAPI(this) }
     val locale: Locale by lazy { Locale(this) }
 
