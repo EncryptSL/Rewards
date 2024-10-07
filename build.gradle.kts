@@ -27,12 +27,12 @@ kotlin {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly(kotlin("stdlib", "2.0.20"))
-    compileOnly("com.zaxxer:HikariCP:5.1.0")
+    compileOnly("com.zaxxer:HikariCP:6.0.0")
     compileOnly("com.discordsrv:discordsrv:1.27.0")
     compileOnly("com.github.encryptsl:KiraDiscord:1.0.6")
-    compileOnly("org.jetbrains.exposed:exposed-core:0.54.0")
-    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.54.0")
-    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.54.0")
+    compileOnly("org.jetbrains.exposed:exposed-core:0.55.0")
+    compileOnly("org.jetbrains.exposed:exposed-jdbc:0.55.0")
+    compileOnly("org.jetbrains.exposed:exposed-kotlin-datetime:0.55.0")
 
     implementation("com.github.encryptsl:KMonoLib:1.0.2")
     implementation("dev.triumphteam:triumph-gui-paper:4.0.0-SNAPSHOT") {
